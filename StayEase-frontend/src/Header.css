@@ -1,0 +1,29 @@
+.header {
+
+    box-sizing: border-box;
+    width: 100%;
+    background-color: white;
+
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 60px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.logo {
+    height: 100px;
+    width: auto;
+}
+
+.register {
+    text-decoration: none;
+    color: #525252;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: "Google Sans Flex", sans-serif;
+    font-optical-sizing: auto;
+}
+
