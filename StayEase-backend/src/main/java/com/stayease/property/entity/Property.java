@@ -1,15 +1,18 @@
 package com.stayease.property.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.stayease.facilities.entity.PropertyFacility;
 import com.stayease.property.Enums.PropertyStatus;
 import com.stayease.property.Enums.PropertyType;
-import com.stayease.users.Owner.Owner;
+import com.stayease.review.entity.Review;
+import com.stayease.users.Owner.entity.Owner;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import com.stayease.rating.entity.Rating;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Property {
 
     @Id
@@ -27,6 +31,7 @@ public class Property {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonIgnore
     private Owner owner;
 
     @Enumerated(EnumType.STRING)
@@ -48,18 +53,24 @@ public class Property {
     private Integer rooms;
     private Integer bathrooms;
 
-    // Facilitățile salvate ca text simplu, conform deciziei tale
-    @Column(columnDefinition = "TEXT")
-    private String amenities;
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PropertyFacility> propertyFacilities;
 
     @Enumerated(EnumType.STRING)
     private PropertyStatus status;
 
-    // Legătura cu imaginile salvate în DB
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PropertyImage> images = new ArrayList<>();
 
-    // Legătura cu perioadele blocate (Calendar)
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UnavailablePeriod> unavailablePeriods = new ArrayList<>();
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+    @Column(name = "average_rating")
+    private Double averageRating = 0.0;
+
+    @Column(name = "total_reviews")
+    private Integer totalReviews = 0;
 }

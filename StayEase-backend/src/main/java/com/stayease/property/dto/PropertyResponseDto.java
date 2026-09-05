@@ -1,5 +1,6 @@
 package com.stayease.property.dto;
 
+import com.stayease.users.Owner.Dto.OwnerProfileResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,10 @@ public class PropertyResponseDto {
     private String address;
     private Double pricePerNight;
     private String description;
-
-    // Aici vom trimite imaginea convertită în text Base64 pentru frontend
+    private Integer maxGuests;
+    private Integer rooms;
+    private Integer bathrooms;
+    private String propertyType;
     private String mainImageBase64;
+    private OwnerProfileResponseDto owner;
 }

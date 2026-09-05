@@ -17,24 +17,19 @@ const AddProperty = () => {
         city: '',
         county: '',
         country: 'România',
-        status: 'Activ'
+        status: 'PENDING'
     });
 
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
 
-    // Starea pentru facilitățile venite de la backend
     const [standardFacilities, setStandardFacilities] = useState([]);
-    // Starea pentru facilitățile pe care utilizatorul le-a BIFAT (vom stoca ID-urile lor)
     const [selectedFacilities, setSelectedFacilities] = useState([]);
 
-    // Stări pentru gestionarea textului din input-urile custom ale fiecărei categorii
     const [customInputs, setCustomInputs] = useState({});
 
-    // STARE NOUĂ: Pentru numele categoriei noi pe care vrea să o adauge utilizatorul
     const [newCategoryName, setNewCategoryName] = useState('');
-
-    // === 2. FETCH-UL ESTE ȘI EL ÎN INTERIOR ===
+    const isAuthenticated = !!localStorage.getItem('jwtToken');
     useEffect(() => {
         fetch("http://localhost:8080/api/facilities/grouped")
             .then(response => response.json())
@@ -45,7 +40,6 @@ const AddProperty = () => {
             .catch(error => console.error("A apărut o eroare la fetch:", error));
     }, []);
 
-    // === 3. FUNCȚIILE DE HANDLING ===
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => {
@@ -61,7 +55,6 @@ const AddProperty = () => {
         });
     };
 
-    // MODIFICAT: Funcția care adună imaginile noi cu cele vechi
     const handleImageChange = (e) => {
         const newFiles = Array.from(e.target.files);
 
@@ -72,21 +65,17 @@ const AddProperty = () => {
         const newPreviews = newFiles.map(file => URL.createObjectURL(file));
         setImagePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
 
-        // Resetăm input-ul pentru a permite selectarea aceleiași imagini din nou (dacă e nevoie)
         e.target.value = null;
     };
 
-    // NOU: Funcție pentru ștergerea unei imagini din listă
     const handleRemoveImage = (indexToRemove) => {
         setImages((prevImages) => prevImages.filter((_, index) => index !== indexToRemove));
 
-        // Evităm scurgerile de memorie
         URL.revokeObjectURL(imagePreviews[indexToRemove]);
 
         setImagePreviews((prevPreviews) => prevPreviews.filter((_, index) => index !== indexToRemove));
     };
 
-    // Funcție: Se ocupă de bifarea/debifarea facilităților
     const handleFacilityCheckboxChange = (facilityId) => {
         setSelectedFacilities((prevSelected) => {
             if (prevSelected.includes(facilityId)) {
@@ -97,7 +86,6 @@ const AddProperty = () => {
         });
     };
 
-    // Actualizează textul din input-ul custom al unei categorii specifice
     const handleCustomInputChange = (categoryId, value) => {
         setCustomInputs((prev) => ({
             ...prev,
@@ -105,7 +93,6 @@ const AddProperty = () => {
         }));
     };
 
-    // Adaugă o facilitate custom în UI și o bifează automat
     const handleAddCustomFacility = (categoryId) => {
         const facilityName = customInputs[categoryId]?.trim();
         if (!facilityName) return;
@@ -139,12 +126,10 @@ const AddProperty = () => {
         }));
     };
 
-    // FUNCȚIE NOUĂ: Adaugă o categorie cu totul nouă în listă
     const handleAddCategory = () => {
         const categoryNameTrimmed = newCategoryName.trim();
         if (!categoryNameTrimmed) return;
 
-        // Verificăm să nu existe deja o categorie cu același nume (case-insensitive)
         const categoryExists = standardFacilities.some(
             cat => cat.categoryName.toLowerCase() === categoryNameTrimmed.toLowerCase()
         );
@@ -153,8 +138,6 @@ const AddProperty = () => {
             alert("Această categorie există deja!");
             return;
         }
-
-        // Generăm un ID temporar pentru categoria custom
         const newCategoryId = `custom-cat-${Date.now()}`;
 
         const newCategory = {
@@ -171,27 +154,31 @@ const AddProperty = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        if (images.length === 0) {
+            alert("Te rugăm să adaugi cel puțin o imagine!");
+            return;
+        }
+
         const submitData = new FormData();
 
         Object.keys(formData).forEach((key) => {
-            submitData.append(key, formData[key]);
+            if (formData[key] !== '') {
+                submitData.append(key, formData[key]);
+            }
         });
 
         images.forEach((image) => {
             submitData.append('images', image);
         });
 
-        // Filtrăm doar ID-urile standard (reale din baza de date)
         const standardSelectedIds = selectedFacilities.filter(
             (id) => typeof id === 'number' || !String(id).startsWith('custom-')
         );
 
-        // Extragem facilitățile custom care au fost create și bifate
         const customSelectedFacilities = [];
         standardFacilities.forEach((category) => {
             category.facilities.forEach((facility) => {
                 if (facility.isCustom && selectedFacilities.includes(facility.id)) {
-                    // Dacă și categoria în sine este nouă (custom-cat-...), trimitem numele categoriei noi, altfel trimitem doar ID-ul categoriei existente
                     const isCategoryCustom = String(category.categoryId).startsWith('custom-cat-');
 
                     customSelectedFacilities.push({
@@ -206,18 +193,36 @@ const AddProperty = () => {
         submitData.append('facilities', JSON.stringify(standardSelectedIds));
         submitData.append('customFacilities', JSON.stringify(customSelectedFacilities));
 
-        console.log("Datele pregătite de trimitere:");
-        console.log("Form Data & Imagini:", Object.fromEntries(submitData));
-        console.log("Facilități standard (ID-uri):", standardSelectedIds);
-        console.log("Facilități custom adăugate:", customSelectedFacilities);
+        try {
+            const token = localStorage.getItem('jwtToken');
+
+            const response = await fetch('http://localhost:8080/api/properties', {
+                method: 'POST',
+                headers: {
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
+                body: submitData
+            });
+
+            if (response.ok) {
+                const savedProperty = await response.json();
+                alert('Proprietatea a fost salvată cu succes!');
+                console.log('Proprietate salvată:', savedProperty);
+            } else {
+                const errorMessage = await response.text();
+                alert(`A apărut o eroare la salvare: ${errorMessage}`);
+            }
+        } catch (error) {
+            console.error('Eroare de rețea la trimiterea formularului:', error);
+            alert('Nu s-a putut conecta la server. Verifică dacă backend-ul este pornit.');
+        }
     };
 
     const isRoom = formData.property_type === 'Cameră';
 
     return (
         <div>
-            <Header onOpenRegister={() => typeof setIsRegisterOpen === 'function' && setIsRegisterOpen(true)} />
-
+            <Header isLoggedIn={isAuthenticated} />
             <div className="add-property-container">
                 <h2>Adaugă o proprietate nouă</h2>
                 <form onSubmit={handleSubmit} className="add-property-form">

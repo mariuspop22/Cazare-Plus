@@ -1,4 +1,4 @@
-package com.stayease.users.Owner;
+package com.stayease.users.Owner.entity;
 
 import com.stayease.users.Acount.User;
 import jakarta.persistence.*;
@@ -28,4 +28,16 @@ public class Owner {
     private String TelephoneNumber;
     private String address;
 
+
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
+    @Column(name = "profile_picture", columnDefinition = "bytea")
+    private byte[] profilePicture;
+
+    public boolean isProfileComplete() {
+        return TelephoneNumber != null && !TelephoneNumber.isEmpty() &&
+                address != null && !address.isEmpty() &&
+                profilePicture != null;
+    }
 }

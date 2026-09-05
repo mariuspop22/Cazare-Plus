@@ -1,27 +1,64 @@
 import React from "react";
 import "./Header.css";
-import logo from "./assets/logo.png"; // pune calea corectă către imaginea ta
+import logo from "./assets/logo.png";
 
-// 1. Am adăugat { onOpenRegister } ca să prindem comanda trimisă din App.jsx
-const Header = ({ onOpenRegister }) => {
+const Header = ({ onOpenRegister, onOpenLogin, isLoggedIn, onLogout, onAddProperty }) => {
     return (
         <header className="header">
             <div className="header-content">
                 <img src={logo} alt="Logo" className="logo" />
             </div>
 
-            {/* 2. Am legat evenimentul onClick de link-ul tău */}
-            <a  class="register"
-                href="#"
-                onClick={(e) => {
-                    e.preventDefault(); // Împiedică link-ul să dea scroll în susul paginii
-                    onOpenRegister();   // Activează "telecomanda" care deschide popup-ul
-                }}
-            >
-                Devino Partener
-            </a>
+            <div className="header-links">
+                {isLoggedIn ? (
+                    <>
+                        <a
+                            className="nav-link add-property"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                if (onAddProperty) onAddProperty();
+                            }}
+                        >
+                            Adaugă proprietate
+                        </a>
+                        <a
+                            className="nav-link logout"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onLogout();
+                            }}
+                        >
+                            Deconectare
+                        </a>
+                    </>
+                ) : (
+                    <>
+                        <a
+                            className="nav-link login"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onOpenLogin();
+                            }}
+                        >
+                            Autentificare
+                        </a>
+                        <a
+                            className="nav-link register"
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onOpenRegister();
+                            }}
+                        >
+                            Devino Partener
+                        </a>
+                    </>
+                )}
+            </div>
         </header>
     );
 };
-
 export default Header;

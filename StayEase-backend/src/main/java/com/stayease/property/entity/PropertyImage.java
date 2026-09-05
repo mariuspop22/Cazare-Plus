@@ -1,5 +1,6 @@
 package com.stayease.property.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,9 +21,9 @@ public class PropertyImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id", nullable = false)
+    @JsonIgnore
     private Property property;
 
-    // Pentru PostgreSQL folosim bytea. Fără @Lob!
     @Column(name = "image_data", columnDefinition = "bytea")
     private byte[] imageData;
 

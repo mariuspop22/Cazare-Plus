@@ -13,9 +13,9 @@
 
 .modal-content {
     background-color: white;
-    padding: 50px;
+    padding: 30px 40px;
     border-radius: 10px;
-    width: 400px;
+    width: 350px;
     max-width: 90%;
     position: relative;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -23,12 +23,13 @@
     font-optical-sizing: auto;
 }
 .modal-content h2 {
-    font-size:24px;
+    font-size:20px;
     font-family: "Limelight", sans-serif;
 
 }
 .modal-content p{
     color: #525252;
+    font-size:12px;
 }
 .close-btn {
     position: absolute;
@@ -36,7 +37,7 @@
     right: 15px;
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
     font-weight: bold;
 }
@@ -44,7 +45,6 @@
 .register-form {
     display: flex;
     flex-direction: column;
-
     margin-top: 20px;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .input-group label {
-    font-size: 14px;
+    font-size: 8px;
     margin-bottom: 5px;
     color: #333;
 }
@@ -64,7 +64,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .submit-btn {
@@ -73,8 +73,8 @@
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
-    font-weight:300;
+    font-size: 12px;
+    font-weight:bold;
     cursor: pointer;
     margin-top: 10px;
 }
