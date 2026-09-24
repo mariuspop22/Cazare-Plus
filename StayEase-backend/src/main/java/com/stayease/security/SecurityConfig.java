@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -25,15 +26,31 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
+                // RECOMANDAT: Pentru JWT, sesiunile trebuie sa fie stateless
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // 1. Permite pre-flight requests din browser (React)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // 2. Autentificare si inregistrare
                         .requestMatchers("/api/auth/**", "/api/register/**").permitAll()
+
+                        // 3. Locatii si Destinatii (Asta iti repara cautarea locatiei)
+                        .requestMatchers("/api/locations/**").permitAll()
+                        .requestMatchers("/api/destinations/**").permitAll()
+
+                        // 4. Cautare Property -> TRUIE PUSĂ ÎNAINTEA LUI /** 
+                        .requestMatchers("/api/properties/search").permitAll()
+
+                        // 5. Restul de rute publice pentru Property si Facilities (doar GET)
                         .requestMatchers(HttpMethod.GET, "/api/properties/**", "/api/facilities/**").permitAll()
+
+                        // 6. Rute protejate
                         .requestMatchers(HttpMethod.POST, "/api/properties/**").authenticated()
                         .requestMatchers("/api/owner/**").authenticated()
                         .requestMatchers("/api/booking/**").authenticated()
-                        .requestMatchers("/api/locations/**").permitAll()
-                        .requestMatchers("/api/destinations/**").permitAll()
+
+                        // 7. Orice altceva
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

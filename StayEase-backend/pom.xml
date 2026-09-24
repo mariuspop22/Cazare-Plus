@@ -111,6 +111,10 @@
             <version>0.11.5</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate6</artifactId> <!-- Folosește hibernate5 dacă ai o versiune mai veche de Spring Boot -->
+        </dependency>
     </dependencies>
 
     <build>

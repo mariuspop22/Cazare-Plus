@@ -13,8 +13,8 @@
 
 .modal-content {
     background-color: white;
-    padding: 30px 40px;
-    border-radius: 10px;
+    padding: 30px 30px;
+    border-radius: 25px;
     width: 350px;
     max-width: 90%;
     position: relative;
@@ -22,15 +22,18 @@
     font-family: "Google Sans Flex", sans-serif;
     font-optical-sizing: auto;
 }
-.modal-content h2 {
-    font-size:20px;
-    font-family: "Limelight", sans-serif;
 
+.modal-content h2 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
-.modal-content p{
+
+.modal-content p {
     color: #525252;
-    font-size:12px;
+    font-size: 12px;
 }
+
 .close-btn {
     position: absolute;
     top: 15px;
@@ -52,33 +55,37 @@
     display: flex;
     flex-direction: column;
     text-align: left;
+    margin-bottom: 12px !important;
 }
 
 .input-group label {
-    font-size: 8px;
+    font-size: 13px !important;
+    font-weight: 500 !important;
     margin-bottom: 5px;
-    color: #333;
+    color: black !important;
 }
-
 .input-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 12px;
+    box-sizing: border-box !important;
+    padding: 10px !important;
+    height: 42px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    font-size: 12px !important;
+    margin: 0 !important;
 }
 
 .submit-btn {
     padding: 12px;
-    background-color: #525252;
+    background-color: #B39898;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight:bold;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 400;
     cursor: pointer;
     margin-top: 10px;
 }
 
 .submit-btn:hover {
-    background-color: #756D6D;
+    background-color: #B8A2A2;
 }

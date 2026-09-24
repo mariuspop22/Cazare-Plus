@@ -26,5 +26,7 @@ public class Renter {
     private String FirstName;
     private String LastName;
     private String TelephoneNumber;
-
+    private String address;
+    @Column(name = "profile_picture", columnDefinition = "bytea")
+    private byte[] profilePicture;
 }

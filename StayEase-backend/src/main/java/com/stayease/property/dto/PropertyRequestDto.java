@@ -1,4 +1,3 @@
-
 package com.stayease.property.dto;
 
 import com.stayease.users.Owner.Dto.OwnerProfileResponseDto;
@@ -6,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -28,4 +28,9 @@ public class PropertyRequestDto {
     private String customFacilities;
     private OwnerProfileResponseDto owner;
 
+    private Integer countyId;
+    private Integer cityId;
+    private Long siruta;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
 }

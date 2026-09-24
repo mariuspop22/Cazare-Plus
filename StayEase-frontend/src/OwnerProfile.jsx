@@ -7,6 +7,7 @@ const OwnerProfile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
     const [file, setFile] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
 
     const token = localStorage.getItem('jwtToken');
     const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
@@ -54,7 +55,11 @@ const OwnerProfile = () => {
     };
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        const selectedFile = e.target.files[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            setProfileImage(URL.createObjectURL(selectedFile));
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -128,7 +133,7 @@ const OwnerProfile = () => {
                                 <strong>Bio:</strong>
                                 <span>{profile.bio || 'Necompletat'}</span>
                             </div>
-                            <button onClick={() => setIsEditing(true)}>Editează Datele</button>
+                            <button className="edit-owner-data" onClick={() => setIsEditing(true)}>Editează Datele</button>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="profile-form">
@@ -150,16 +155,37 @@ const OwnerProfile = () => {
                             <label>Bio:</label>
                             <textarea name="bio" value={formData.bio} onChange={handleInputChange}></textarea>
 
-                            <label>Poză de profil:</label>
-                            <input type="file" accept="image/*" onChange={handleFileChange} />
+                            <label className="profile-pic-label">Poză de profil:</label>
+                            <div className="profile-upload-wrapper">
+                                <div className="custom-file-upload-container">
+                                    <input
+                                        type="file"
+                                        id="profile-image-input"
+                                        accept="image/*"
+                                        onChange={handleFileChange}
+                                        className="hidden-file-input"
+                                    />
+                                    <label htmlFor="profile-image-input" className="custom-upload-btn">
+                                        {(profileImage || profile.profilePictureBase64) ? 'Schimbă' : 'Alege o poză'}
+                                    </label>
+                                </div>
 
+                                {(profileImage || profile.profilePictureBase64) && (
+                                    <div className="profile-image-preview">
+                                        <img src={profileImage || profile.profilePictureBase64} alt="Poză de profil" />
+                                    </div>
+                                )}
+                            </div>
                             <div className="form-actions">
-                                <button type="submit">Salvează Modificările</button>
-                                <button type="button" onClick={() => setIsEditing(false)}>Anulează</button>
+                                <button className="save-modifications-button" type="submit">Salvează Modificările</button>
+                                <button className="cancel-modifications-button" type="button" onClick={() => setIsEditing(false)}>Anulează</button>
                             </div>
                         </form>
                     )}
                 </div>
+
+            </div>
+            <div className="owner-properties-container">
                 <div className="owner-properties-section">
                     <div className="section-header">
                         <h3>Proprietățile mele ({properties.length})</h3>

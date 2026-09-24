@@ -20,7 +20,7 @@ public class PropertyDetailsDTO {
     private Integer rooms;
     private Integer bathrooms;
     private String status;
-
+    private Double rating;
     private List<ImageDTO> images;
     private List<FacilityGroupDTO> facilities;
     private OwnerProfileResponseDto owner;

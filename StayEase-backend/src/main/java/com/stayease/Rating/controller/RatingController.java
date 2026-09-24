@@ -1,6 +1,7 @@
 package com.stayease.Rating.controller;
 
 
+import com.stayease.Rating.dto.RatingResponseDto;
 import com.stayease.rating.entity.Rating;
 import com.stayease.Rating.Service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,8 @@ public class RatingController {
     public ResponseEntity<?> getAverageRating(@PathVariable Long propertyId) {
         Double average = ratingService.getPropertyAverageRating(propertyId);
 
-        // Returnăm un JSON drăguț de genul: { "rating": 4.99 }
-        return ResponseEntity.ok(Map.of("rating", average));
+        // REZOLVAREA EROLII: Evităm NullPointerException oferind 0.0 ca valoare de rezervă
+        return ResponseEntity.ok(Map.of("rating", average != null ? average : 0.0));
     }
 
     /**
@@ -37,5 +38,14 @@ public class RatingController {
     public ResponseEntity<List<Rating>> getPropertyRatings(@PathVariable Long propertyId) {
         List<Rating> ratings = ratingService.getAllRatingsForProperty(propertyId);
         return ResponseEntity.ok(ratings);
+    }
+    /**
+     * Endpoint NOU: GET http://localhost:8080/api/properties/1/reviews
+     * Returnează review-urile împreună cu datele chiriașilor (nume, prenume, poză profil)
+     */
+    @GetMapping("/{propertyId}/reviews")
+    public ResponseEntity<List<RatingResponseDto>> getPropertyReviews(@PathVariable Long propertyId) {
+        List<RatingResponseDto> reviews = ratingService.getReviewsForProperty(propertyId);
+        return ResponseEntity.ok(reviews);
     }
 }

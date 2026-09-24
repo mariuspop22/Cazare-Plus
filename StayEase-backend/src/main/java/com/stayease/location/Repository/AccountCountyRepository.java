@@ -1,12 +1,21 @@
 package com.stayease.location.Repository;
 
 import com.stayease.location.entity.AccountCounty;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@Repository
 public interface AccountCountyRepository extends JpaRepository<AccountCounty, Integer> {
-    List<AccountCounty> findTop5ByNameContainingIgnoreCaseOrderByNameAsc(String name);
+
+    @Query("SELECT c FROM AccountCounty c WHERE " +
+            "REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(LOWER(c.name), " +
+            "'ă', 'a'), 'â', 'a'), 'î', 'i'), 'ș', 's'), 'ş', 's'), 'ț', 't'), 'ţ', 't') " +
+            "LIKE CONCAT(:query, '%') " +
+            "ORDER BY c.name ASC")
+    List<AccountCounty> searchWithoutDiacritics(@Param("query") String query, Pageable pageable);
+
+    List<AccountCounty> findAllByOrderByNameAsc();
 }

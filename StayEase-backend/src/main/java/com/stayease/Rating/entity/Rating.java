@@ -26,16 +26,18 @@ public class Rating {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "property_id", nullable = false)
-    @JsonIgnore // Previne buclele infinite la serializarea JSON
+    @JsonIgnore
     private Property property;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "renter_id", nullable = false)
     private Renter renter;
 
-    // Nota de la 1 la 5
     @Column(nullable = false)
     private Integer score;
+
+    @Column(name = "comment", columnDefinition = "TEXT")
+    private String comment;
 
     @CreationTimestamp
     @Column(updatable = false)

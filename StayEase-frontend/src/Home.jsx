@@ -8,13 +8,96 @@ import apartment from "./assets/apartment.png";
 import house from "./assets/house.png";
 import room from "./assets/room.png";
 
-// Importul noului calendar
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-// Am adăugat FaFire aici!
-import { FaBed, FaCalendarAlt, FaUser, FaMapMarkerAlt, FaFire } from "react-icons/fa";
+import { FaBed, FaCalendarAlt, FaUser, FaMapMarkerAlt, FaFire, FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
+const DestinationCarousel = ({ dest, properties, navigate }) => {
+    const scrollRef = useRef(null);
+
+    const scroll = (scrollOffset) => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollLeft += scrollOffset;
+        }
+    };
+
+    const getPropertyImage = (property) => {
+        // 1. Căutăm imaginea marcată cu mainImage: true în array-ul images
+        if (property.images && property.images.length > 0) {
+            const mainImg = property.images.find(img => img.mainImage) || property.images[0];
+            if (mainImg && mainImg.imageData) {
+                return mainImg.imageData.startsWith('data:')
+                    ? mainImg.imageData
+                    : `data:image/jpeg;base64,${mainImg.imageData}`;
+            }
+        }
+
+        // 2. Fallback în cazul în care backend-ul trimite direct mainImageBase64
+        if (property.mainImageBase64) {
+            return property.mainImageBase64.startsWith('data:')
+                ? property.mainImageBase64
+                : `data:image/jpeg;base64,${property.mainImageBase64}`;
+        }
+
+        return null;
+    };
+
+    return (
+        <div className="top-properties-section">
+            <div className="top-property-subtitle-icon">
+                <FaFire className="title-icon" />
+                <h3 className="top-properties-subtitle">Best in {dest.name}</h3>
+            </div>
+            <div className="carousel-wrapper">
+                <button className="scroll-arrow left" onClick={() => scroll(-300)}>
+                    <FaChevronLeft />
+                </button>
+
+                <div className="top-properties-grid" ref={scrollRef}>
+                    {properties.map(property => {
+                        const imageSrc = getPropertyImage(property);
+
+                        return (
+                            <div key={property.id} className="top-property-card" onClick={() => navigate(`/property/${property.id}`)}>
+                                <div className="top-property-image-container">
+                                    {imageSrc ? (
+                                        <img
+                                            src={imageSrc}
+                                            alt={property.title}
+                                            className="top-property-image"
+                                        />
+                                    ) : (
+                                        <div className="no-image-placeholder">Fără imagine</div>
+                                    )}
+                                    <span className="top-property-rating">
+                                        {property.averageRating > 0 ? property.averageRating : 'Nou'}
+                                        <FaStar className="star-icon" />
+                                    </span>
+                                </div>
+
+                                <div className="top-property-info">
+                                    <div className="top-property-header">
+                                        <h4 className="top-property-title">{property.title}</h4>
+                                    </div>
+                                    <div className="top-property-header">
+                                        <div className="top-property-price">
+                                            {property.pricePerNight} RON / noapte
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <button className="scroll-arrow right" onClick={() => scroll(300)}>
+                    <FaChevronRight />
+                </button>
+            </div>
+        </div>
+    );
+};
 function Home() {
     const [featuredProperties, setFeaturedProperties] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,17 +105,14 @@ function Home() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("jwtToken"));
 
-    // State-uri pentru Search Bar (Locație)
     const [destination, setDestination] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedLocationInfo, setSelectedLocationInfo] = useState(null);
 
-    // State-uri pentru calendar (interval: start și end date)
     const [dateRange, setDateRange] = useState([null, null]);
     const [startDate, endDate] = dateRange;
 
-    // === State-uri pentru Oaspeți și Camere ===
     const [isGuestDropdownOpen, setIsGuestDropdownOpen] = useState(false);
     const [guestCounts, setGuestCounts] = useState({
         adults: 2,
@@ -40,34 +120,60 @@ function Home() {
         rooms: 1
     });
 
-    // === State pentru Destinațiile Populare ===
     const [popularDestinations, setPopularDestinations] = useState([]);
+    const [topPropertiesPerDestination, setTopPropertiesPerDestination] = useState({});
 
     const navigate = useNavigate();
 
-    // Aducem proprietățile de pe backend
     useEffect(() => {
         fetch("http://localhost:8080/api/properties/featured")
-            .then(response => response.json())
-            .then(data => setFeaturedProperties(data))
-            .catch(error => console.error(error));
+            .then(async response => {
+                if (!response.ok) throw new Error(`Eroare Featured: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                console.log("[TEST BACKEND] Featured Properties primite:", data);
+                setFeaturedProperties(data);
+            })
+            .catch(error => console.error("[TEST BACKEND] Eroare la /api/properties/featured:", error));
     }, []);
 
     useEffect(() => {
         fetch("http://localhost:8080/api/destinations/popular")
             .then(async response => {
-                // Dacă backend-ul dă eroare (ex: 404, 500), prindem textul erorii
                 if (!response.ok) {
                     const errorText = await response.text();
                     throw new Error(`Status ${response.status}: ${errorText}`);
                 }
                 return response.json();
             })
-            .then(data => setPopularDestinations(data))
-            .catch(error => console.error("Eroare la aducerea destinațiilor:", error.message));
+            .then(data => {
+                console.log("[TEST BACKEND] Destinații populare primite:", data);
+                setPopularDestinations(data);
+            })
+            .catch(error => console.error("[TEST BACKEND] Eroare la /api/destinations/popular:", error.message));
     }, []);
 
-    // Slider pentru proprietăți
+    useEffect(() => {
+        if (popularDestinations.length > 0) {
+            popularDestinations.forEach(dest => {
+                fetch(`http://localhost:8080/api/destinations/${encodeURIComponent(dest.name)}/top-properties?limit=10`)
+                    .then(res => {
+                        if (!res.ok) throw new Error(`Status ${res.status}`);
+                        return res.json();
+                    })
+                    .then(data => {
+                        console.log(`[TEST BACKEND] Top properties pentru ${dest.name}:`, data);
+                        setTopPropertiesPerDestination(prev => ({
+                            ...prev,
+                            [dest.name]: data
+                        }));
+                    })
+                    .catch(err => console.error(`[TEST BACKEND] Eroare la top-properties pt ${dest.name}:`, err));
+            });
+        }
+    }, [popularDestinations]);
+
     useEffect(() => {
         if (featuredProperties.length <= 1) return;
         const interval = setInterval(() => {
@@ -78,20 +184,20 @@ function Home() {
         return () => clearInterval(interval);
     }, [featuredProperties]);
 
-    // Efect pentru căutarea locațiilor
     useEffect(() => {
         if (destination.trim().length >= 2 && !selectedLocationInfo) {
             const delayDebounceFn = setTimeout(() => {
                 fetch(`http://localhost:8080/api/locations/search?query=${destination}`)
                     .then(res => {
-                        if (!res.ok) throw new Error(`Serverul a răspuns cu status: ${res.status}`);
+                        if (!res.ok) throw new Error(`Status: ${res.status}`);
                         return res.json();
                     })
                     .then(data => {
+                        console.log(`[TEST BACKEND] Rezultate autocomplete locație "${destination}":`, data);
                         setSearchResults(data);
                         setShowDropdown(true);
                     })
-                    .catch(err => console.error("Eroare la căutare:", err));
+                    .catch(err => console.error("[TEST BACKEND] Eroare la /api/locations/search:", err));
             }, 300);
 
             return () => clearTimeout(delayDebounceFn);
@@ -107,13 +213,31 @@ function Home() {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        console.log("Căutare:", {
-            destination,
-            locationData: selectedLocationInfo,
-            startDate,
-            endDate,
-            guests: guestCounts
+
+        const queryParams = new URLSearchParams({
+            city: destination,
+            adults: guestCounts.adults,
+            children: guestCounts.children,
+            rooms: guestCounts.rooms
         });
+
+        if (startDate) queryParams.append("checkIn", startDate.toISOString().split('T')[0]);
+        if (endDate) queryParams.append("checkOut", endDate.toISOString().split('T')[0]);
+
+        const searchUrl = `http://localhost:8080/api/properties/search?${queryParams.toString()}`;
+
+        fetch(searchUrl)
+            .then(res => {
+                if (!res.ok) throw new Error(`Eroare de la server. Status: ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                navigate("/rezultate", { state: { properties: data } });
+            })
+            .catch(err => {
+                console.error("Eroare la căutare:", err);
+                alert("Căutarea a eșuat. Verifică consola!");
+            });
     };
 
     const handleSelectLocation = (location) => {
@@ -127,7 +251,6 @@ function Home() {
         setSelectedLocationInfo(null);
     };
 
-    // Funcția pentru modificarea numărului de oaspeți
     const handleGuestChange = (type, operation) => {
         setGuestCounts(prev => {
             let newValue = operation === 'increment' ? prev[type] + 1 : prev[type] - 1;
@@ -159,7 +282,6 @@ function Home() {
                         <form className="search-bar-form" onSubmit={handleSearch}>
                             <div className="search-bar-frame">
 
-                                {/* Câmpul Unde mergeți? */}
                                 <div className="search-field" style={{ position: "relative" }}>
                                     <FaBed className="search-field-icon" />
                                     <div className="search-field-content">
@@ -190,7 +312,6 @@ function Home() {
                                     )}
                                 </div>
 
-                                {/* Câmpul Calendar */}
                                 <div className="search-field">
                                     <FaCalendarAlt className="search-field-icon" />
                                     <div className="search-field-content">
@@ -208,7 +329,6 @@ function Home() {
                                     </div>
                                 </div>
 
-                                {/* Câmpul Oaspeți cu Dropdown */}
                                 <div className="search-field" style={{ position: "relative" }}>
                                     <FaUser className="search-field-icon" />
                                     <div
@@ -227,7 +347,6 @@ function Home() {
 
                                     {isGuestDropdownOpen && (
                                         <div className="guest-dropdown">
-                                            {/* Adulți */}
                                             <div className="guest-dropdown-item">
                                                 <div className="guest-text-wrapper">
                                                     <span className="guest-title">Adulți</span>
@@ -240,7 +359,6 @@ function Home() {
                                                 </div>
                                             </div>
 
-                                            {/* Copii */}
                                             <div className="guest-dropdown-item">
                                                 <div className="guest-text-wrapper">
                                                     <span className="guest-title">Copii</span>
@@ -253,7 +371,6 @@ function Home() {
                                                 </div>
                                             </div>
 
-                                            {/* Camere */}
                                             <div className="guest-dropdown-item">
                                                 <div className="guest-text-wrapper">
                                                     <span className="guest-title">Camere</span>
@@ -299,11 +416,8 @@ function Home() {
                     </div>
                 </div>
 
-                {/* Aici am păstrat structura ta de div-uri intactă! */}
                 <div className="popular-destination">
                     <div className="popular-destinations-container">
-
-                        {/* Aici este noul header de care ziceam */}
                         <div className="popular-destinations-header">
                             <div className="popular-destinations-title-wrapper">
                                 <FaFire className="title-icon" />
@@ -322,16 +436,31 @@ function Home() {
                                         alt={dest.name}
                                         className="destination-image"
                                     />
-
                                     <div className="destination-overlay">
-                                    <span className="destination-name">
-                                        {dest.name}
-                                    </span>
+                                        <span className="destination-name">
+                                            {dest.name}
+                                        </span>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
+                </div>
+
+                <div className="top-properties-wrapper">
+                    {popularDestinations.map(dest => {
+                        const properties = topPropertiesPerDestination[dest.name];
+                        if (!properties || properties.length === 0) return null;
+
+                        return (
+                            <DestinationCarousel
+                                key={`top-${dest.id}`}
+                                dest={dest}
+                                properties={properties}
+                                navigate={navigate}
+                            />
+                        );
+                    })}
                 </div>
 
             </div>

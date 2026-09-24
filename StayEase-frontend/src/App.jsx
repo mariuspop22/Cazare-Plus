@@ -4,6 +4,9 @@ import Home from "./Home";
 import AddProperty from "./AddProperty";
 import PropertyDetails from "./PropertyDetails";
 import OwnerProfile from "./OwnerProfile";
+import SearchResults from './SearchResults';
+import EditProperty from './EditProperty.jsx';
+
 function App() {
     return (
         <Router>
@@ -12,6 +15,11 @@ function App() {
                 <Route path="/add-property" element={<AddProperty />} />
                 <Route path="/property/:id" element={<PropertyDetails />} />
                 <Route path="/owner/profile" element={<OwnerProfile />} />
+                <Route path="/rezultate" element={<SearchResults />} />
+                <Route
+                    path="/edit-property/:id"
+                    element={<EditProperty />}
+                />
             </Routes>
         </Router>
     );
