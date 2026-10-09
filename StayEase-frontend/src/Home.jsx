@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
+import Footer from "./Footer";
 import "./Home.css";
 import RegisterModal from "./RegisterModal";
 import LoginModal from "./Login";
@@ -464,6 +465,7 @@ function Home() {
                 </div>
 
             </div>
+            <Footer />
         </div>
     );
 }

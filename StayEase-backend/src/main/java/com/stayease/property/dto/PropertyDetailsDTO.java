@@ -21,6 +21,7 @@ public class PropertyDetailsDTO {
     private Integer bathrooms;
     private String status;
     private Double rating;
+    private String RejectionReason;
     private List<ImageDTO> images;
     private List<FacilityGroupDTO> facilities;
     private OwnerProfileResponseDto owner;

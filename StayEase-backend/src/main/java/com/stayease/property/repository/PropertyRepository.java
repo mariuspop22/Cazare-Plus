@@ -3,6 +3,7 @@ package com.stayease.property.repository;
 import com.stayease.property.Enums.PropertyType;
 import com.stayease.property.entity.Property;
 import com.stayease.property.Enums.PropertyStatus;
+import com.stayease.users.Owner.OwnerStatsProjection;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -155,5 +156,18 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("radiusKm") double radiusKm,
             @Param("limit") int limit
     );
+
+    @EntityGraph(attributePaths = {"owner", "images"})
+    List<Property> findByStatus(PropertyStatus status);
+    @EntityGraph(attributePaths = {"images"})
+    @Query("SELECT p FROM Property p WHERE p.owner.id = :ownerId AND p.status = 'APPROVED'")
+    List<Property> findByOwnerId(@Param("ownerId") Long ownerId);
+
+
+        @Query("SELECT " +
+                "COALESCE(SUM(p.totalReviews), 0) AS totalReviews, " +
+                "COALESCE(AVG(NULLIF(p.averageRating, 0)), 0.0) AS averageRating " +
+                "FROM Property p WHERE p.owner.id = :ownerId")
+        OwnerStatsProjection getOwnerStatsByOwnerId(@Param("ownerId") Long ownerId);
 
 }

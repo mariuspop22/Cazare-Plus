@@ -1,5 +1,6 @@
 package com.stayease.property.dto;
 
+import com.stayease.property.Enums.PropertyStatus;
 import com.stayease.users.Owner.Dto.OwnerProfileResponseDto;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,7 @@ public class PropertyResponseDto {
     private Integer bathrooms;
     private String propertyType;
     private String mainImageBase64;
+    private String rejectionReason;
     private OwnerProfileResponseDto owner;
+    private Enum<PropertyStatus> status;
 }

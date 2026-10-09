@@ -4,9 +4,9 @@ import com.stayease.property.dto.ImageDTO;
 import com.stayease.property.dto.PropertyDetailsDTO;
 import com.stayease.property.dto.UnavailablePeriodDto;
 import com.stayease.property.entity.Property;
-import com.stayease.property.entity.UnavailablePeriod;
+import com.stayease.PropertyUnavailablePeriods.entity.UnavailablePeriod;
 import com.stayease.property.repository.PropertyRepository;
-import com.stayease.property.repository.UnavailablePeriodRepository;
+import com.stayease.PropertyUnavailablePeriods.Repository.UnavailablePeriodRepository;
 import com.stayease.users.Owner.Dto.OwnerProfileResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,10 @@ public class PropertyDisplayService {
         dto.setRooms(property.getRooms());
         dto.setBathrooms(property.getBathrooms());
         dto.setStatus(property.getStatus().name());
+        if (property.getRejectionReason()!= null){
+            dto.setRejectionReason(property.getRejectionReason());
 
+        }
         List<ImageDTO> imageDTOs = property.getImages().stream().map(img -> {
             ImageDTO imgDto = new ImageDTO();
             imgDto.setId(img.getId());
@@ -94,7 +97,7 @@ public class PropertyDisplayService {
 
         if (property.getOwner() != null) {
             OwnerProfileResponseDto ownerDto = new OwnerProfileResponseDto();
-
+            ownerDto.setId(property.getOwner().getId());
             ownerDto.setFirstName(property.getOwner().getFirstName());
             ownerDto.setLastName(property.getOwner().getLastName());
             ownerDto.setTelephoneNumber(property.getOwner().getTelephoneNumber());

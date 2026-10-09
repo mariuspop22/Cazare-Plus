@@ -1,6 +1,6 @@
-package com.stayease.property.repository;
+package com.stayease.PropertyUnavailablePeriods.Repository;
 
-import com.stayease.property.entity.UnavailablePeriod;
+import com.stayease.PropertyUnavailablePeriods.entity.UnavailablePeriod;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

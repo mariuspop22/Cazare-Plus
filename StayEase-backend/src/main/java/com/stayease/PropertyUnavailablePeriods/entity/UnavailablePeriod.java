@@ -1,6 +1,7 @@
-package com.stayease.property.entity;
+package com.stayease.PropertyUnavailablePeriods.entity;
 
 
+import com.stayease.property.entity.Property;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

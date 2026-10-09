@@ -10,8 +10,8 @@ import {
     TbSmokingNo, TbBan, TbToolsKitchen2, TbParking,
     TbBell, TbTree, TbStar, TbInfoCircle, TbCheck, TbBuildingCommunity
 } from 'react-icons/tb';
+import Footer from "./Footer.jsx";
 
-// --- COMPONENTA PENTRU CARUSELUL DE PROPRIETĂȚI SIMILARE ---
 const SimilarPropertiesCarousel = ({ properties, navigate }) => {
     const scrollRef = useRef(null);
 
@@ -151,8 +151,7 @@ const PropertyDetails = () => {
                 if (data.images && data.images.length > 0) {
                     const mainImg = data.images.find(img => img.mainImage) || data.images[0];
                     setActiveImage(mainImg.base64Data);
-                    console.log("ffff:");
-                    console.log(data);
+
                 }
             } catch (err) {
                 setError(err.message);
@@ -574,6 +573,8 @@ const PropertyDetails = () => {
                 </div>
 
             </main>
+            <Footer />
+
         </div>
     );
 };

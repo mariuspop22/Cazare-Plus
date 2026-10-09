@@ -50,4 +50,6 @@ public class OwnerProfileController {
         List<PropertyResponseDto> properties = propertyService.getPropertiesByOwnerEmail(email);
         return ResponseEntity.ok(properties);
     }
+
+
 }

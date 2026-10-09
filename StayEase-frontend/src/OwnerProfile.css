@@ -95,20 +95,16 @@
 .edit-owner-data {
     align-self: flex-end;
     margin-top: 16px;
-    background-color: #B39898;
-    color:white;
+    background-color: transparent;
+    color:black;
     border: none;
     padding: 12px 30px;
-    border-radius: 25px;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     cursor: pointer;
     transition: color 0.2s;
 }
 
-.profile-details button:hover {
-    color: #B5A8A8;
-}
 
 .profile-form {
     display: flex;
@@ -168,13 +164,12 @@
 }
 
 .save-modifications-button{
-    background-color: #B39898;
-    color:white;
+    background-color: transparent;
+    color:black;
     border: none;
     padding: 12px 30px !important;
-    border-radius: 25px !important;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     cursor: pointer;
     transition: color 0.2s
 }
@@ -203,99 +198,7 @@
     }
 }
 
-.owner-properties-section {
-    margin-top: 40px;
-}
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.owner-properties-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.owner-properties-section{
-    width:1300px;
-    margin-top: 20px;
-}
-.owner-properties-section h3{
-    font-weight:500;
-}
-.add-prop-btn {
-    background-color: #AD9292;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 25px;
-    font-weight: 400;
-    cursor: pointer;
-}
-
-.properties-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px !important;
-    margin-top:10px !important;
-
-}
-
-.property-card-modern {
-    position: relative;
-    height: 220px;
-    border-radius: 25px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    display: flex;
-    align-items: flex-end;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.property-card-modern:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-}
-
-.property-card-overlay {
-
-    width:100%;
-    padding:15px 10px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.property-title-modern {
-    color: white;
-    margin: 0;
-    font-size: 13px;
-    font-weight: 500;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 60%;
-}
-
-.edit-btn-modern {
-    background-color: transparent;
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s ease;
-}
 
 /* Containerul general principal */
 .profile-upload-wrapper {

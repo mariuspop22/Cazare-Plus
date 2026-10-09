@@ -2,6 +2,7 @@ package com.stayease.property.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stayease.FavoriteProperties.entity.Favorite;
+import com.stayease.PropertyUnavailablePeriods.entity.UnavailablePeriod;
 import com.stayease.facilities.entity.PropertyFacility;
 import com.stayease.location.entity.AccountCity;
 import com.stayease.location.entity.AccountCounty;
@@ -103,4 +104,7 @@ public class Property {
 
     @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Favorite> favoritedBy = new ArrayList<>();
+
+    @Column(name = "rejection_reason", columnDefinition = "TEXT")
+    private String rejectionReason;
 }

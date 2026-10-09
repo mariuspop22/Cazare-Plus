@@ -38,17 +38,19 @@ public class SecurityConfig {
                         // 3. Locatii si Destinatii (Asta iti repara cautarea locatiei)
                         .requestMatchers("/api/locations/**").permitAll()
                         .requestMatchers("/api/destinations/**").permitAll()
+                        .requestMatchers("/api/owner/**").permitAll()
 
                         // 4. Cautare Property -> TRUIE PUSĂ ÎNAINTEA LUI /** 
                         .requestMatchers("/api/properties/search").permitAll()
 
                         // 5. Restul de rute publice pentru Property si Facilities (doar GET)
                         .requestMatchers(HttpMethod.GET, "/api/properties/**", "/api/facilities/**").permitAll()
-
+                        .requestMatchers("/api/properties/*/UnavailablePeriods").permitAll()
                         // 6. Rute protejate
                         .requestMatchers(HttpMethod.POST, "/api/properties/**").authenticated()
                         .requestMatchers("/api/owner/**").authenticated()
                         .requestMatchers("/api/booking/**").authenticated()
+                        .requestMatchers("api/admin/**").permitAll()
 
                         // 7. Orice altceva
                         .anyRequest().authenticated()

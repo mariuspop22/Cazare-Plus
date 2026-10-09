@@ -685,13 +685,13 @@
     background-color: #f0f0f0;
 }
 
-.scroll-arrow.left {
-    left: 10px;
+.top-properties-grid .scroll-arrow.left {
+    left: 10px !important;
     top:75px;
 }
 
-.scroll-arrow.right {
-    right: 10px;
+.top-properties-grid .scroll-arrow.right {
+    right: 10px !important;
     top:75px;
 }
 

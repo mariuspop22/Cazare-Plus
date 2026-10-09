@@ -1,7 +1,6 @@
 package com.stayease.property.service;
 
-import com.stayease.property.dto.ImageDTO;
-import com.stayease.property.dto.PropertyDetailsDTO;
+import com.stayease.property.dto.*;
 import org.springframework.data.domain.Pageable;
 import java.util.Base64;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,8 +14,6 @@ import com.stayease.location.entity.AccountCity;
 import com.stayease.location.entity.AccountCounty;
 import com.stayease.location.Repository.AccountCityRepository;
 import com.stayease.location.Repository.AccountCountyRepository;
-import com.stayease.property.dto.PropertyRequestDto;
-import com.stayease.property.dto.PropertyResponseDto;
 import com.stayease.property.entity.Property;
 import com.stayease.property.entity.PropertyImage;
 import com.stayease.property.Enums.PropertyStatus;
@@ -207,7 +204,8 @@ public class PropertyService {
             dto.setCity(property.getAccountCity() != null ? property.getAccountCity().getName() : property.getCity());
             dto.setAddress(property.getAddress());
             dto.setPricePerNight(property.getPricePerNight());
-
+            dto.setStatus(property.getStatus());
+            dto.setRejectionReason(property.getRejectionReason());
             if (property.getImages() != null && !property.getImages().isEmpty()) {
                 byte[] imageData = property.getImages().get(0).getImageData();
                 if (imageData != null) {
@@ -218,6 +216,30 @@ public class PropertyService {
 
             return dto;
         }).collect(Collectors.toList());
+    }
+    public List<PropertyResponseDto> getOwnerProperties(Long id){
+        List<Property> properties = propertyRepository.findByOwnerId(id);
+        List<PropertyResponseDto> propertiesDto=new ArrayList<>();
+        for (Property property: properties){
+            PropertyResponseDto dto=new PropertyResponseDto();
+            dto.setId(property.getId());
+            dto.setTitle(property.getTitle());
+            if (property.getImages() != null && !property.getImages().isEmpty()) {
+                byte[] imageData = property.getImages().get(0).getImageData();
+                if (imageData != null) {
+                    String base64String = Base64.getEncoder().encodeToString(imageData);
+                    dto.setMainImageBase64("data:image/jpeg;base64," + base64String);
+                }
+
+            }
+            propertiesDto.add(dto);
+        }
+        return propertiesDto;
+    }
+    public List<PropertyResponseDto> filterApprovedProperties(List<PropertyResponseDto> properties) {
+        return properties.stream()
+                .filter(property -> property.getStatus() == PropertyStatus.APPROVED)
+                .collect(Collectors.toList());
     }
 
     public PropertyResponseDto getPropertyById(Long id) {
@@ -373,4 +395,5 @@ public class PropertyService {
         }
         return dto;
     }
+
 }

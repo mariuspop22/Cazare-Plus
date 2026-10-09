@@ -11,19 +11,8 @@ const OwnerProfile = () => {
 
     const token = localStorage.getItem('jwtToken');
     const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
-    const [properties, setProperties] = useState([]);
 
-    const fetchMyProperties = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/api/owner/profile/properties', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const data = await response.json();
-            setProperties(data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+
 
     const fetchProfile = async () => {
         try {
@@ -47,7 +36,6 @@ const OwnerProfile = () => {
 
     useEffect(() => {
         fetchProfile();
-        fetchMyProperties();
     }, []);
 
     const handleInputChange = (e) => {
@@ -185,43 +173,7 @@ const OwnerProfile = () => {
                 </div>
 
             </div>
-            <div className="owner-properties-container">
-                <div className="owner-properties-section">
-                    <div className="section-header">
-                        <h3>Proprietățile mele ({properties.length})</h3>
-                        <button className="add-prop-btn" onClick={() => window.location.href = '/add-property'}>
-                            + Adaugă Proprietate Nouă
-                        </button>
-                    </div>
 
-                    {properties.length === 0 ? (
-                        <p className="no-props">Nu ai nicio proprietate adăugată pentru închiriere.</p>
-                    ) : (
-                        <div className="properties-grid">
-                            {properties.map((prop) => (
-                                <div
-                                    key={prop.id}
-                                    className="property-card-modern"
-                                    style={{
-                                        backgroundImage: `url(${prop.mainImageBase64 || '/default-house.png'})`
-                                    }}
-                                >
-                                    <div className="property-card-overlay">
-                                        <h4 className="property-title-modern">{prop.title}</h4>
-
-                                        <button
-                                            className="edit-btn-modern"
-                                            onClick={() => window.location.href = `/edit-property/${prop.id}`}
-                                        >
-                                            Editează
-                                        </button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
         </>
     );
 };
