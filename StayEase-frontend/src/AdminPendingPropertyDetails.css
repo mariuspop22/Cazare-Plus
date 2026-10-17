@@ -1,0 +1,541 @@
+.Pending-Property-Details-container{
+    margin-top:40px;
+}
+.Pending-Property-Details-page-content {
+    max-width: 1250px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.Pending-Property-Details-Page{
+    display:flex;
+    justify-content: center;
+}
+.section-left {
+    max-width:600px;
+    flex: 1;
+}
+
+.Pending-Property-Details-page-content h3, .property-images-section h3{
+    font-weight: 400;
+    text-decoration: underline;
+}
+.details-title{
+    margin-top:5px;
+    margin-bottom:5px;
+    background-color: #f9f9f9;
+    padding:8px 12px;
+    border-radius:6px;
+
+
+}
+.general-details-title {
+    font-weight: 400;
+    font-size: 14px;
+
+}
+.details-title{
+    font-size: 14px;
+    color:#717171;
+}
+.section-left h4 span,.Property-description{
+    color:#717171;
+    font-size:14px;
+}
+.Property-description {
+    padding: 10px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    word-spacing: 2px;
+    background-color: #f9f9f9;
+    border-radius:6px;
+
+}
+
+.section-right {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 0px 20px;
+}
+
+.facility-category {
+    margin-bottom: 20px;
+}
+
+.category-title {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #222222;
+    margin-bottom: 10px;
+}
+
+.facility-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.facility-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #444;
+}
+
+.custom-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+}
+.category-title span{
+    font-weight: 400;
+}
+
+
+.property-images-section {
+    margin-top: 40px;
+    width: 100%;
+    padding-top: 20px;
+    border-top: 1px solid #eaeaea;
+}
+
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom:60px;
+}
+
+.property-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.property-image:hover {
+    transform: scale(1.02);
+}
+
+.no-images-text {
+    color: #717171;
+    font-style: italic;
+    font-size: 15px;
+}
+
+.property-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+
+.image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-image-full {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+    user-select: none;
+}
+
+.close-modal-btn:hover {
+    color: #cccccc;
+}
+.owner-label-small-admin-page{
+    font-size:14px;
+    color:#717171;
+}
+.property-owner-summary-admin-page {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 18px 10px;
+    border-radius: 20px;
+    background-color: #FFFCFC;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.property-price-capacity, .property-location-info{
+    margin-top:40px
+}
+
+
+.owner-approved-propertie h3 {
+    font-weight:400;
+    text-decoration: underline;
+    margin-bottom:30px;
+    margin-top:0;
+}
+.owner-approved-propertie {
+    margin-top: 40px;
+    padding-bottom: 10px;
+}
+
+
+
+.owner-approved-propertie-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.approved-property-card {
+    width: 180px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+}
+
+.approved-property-image-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 26px;
+    overflow: hidden;
+}
+
+.approved-property-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.approved-property-card:hover .approved-property-image {
+    transform: scale(1.05);
+}
+
+.approved-property-title {
+    color: #222;
+    font-weight: 400;
+    font-size: 14px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.owner-approved-properties-title{
+    display:flex;
+    gap:5px;
+}
+.property-owner-details{
+    margin-left: 20px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.Average-Rating h4{
+    display: flex;
+    justify-content: center;
+    font-weight:500;
+    font-size:20px;
+    margin-bottom:8px;
+    margin-top:0;
+}
+.Average-Rating-and-Reviews{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    margin-right:40px;
+    gap:30px;
+
+}
+.property-owner-summary-admin-page{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.Average-Rating .average-score-stars img{
+    height:84px;
+    width:84px;
+}
+.Average-Reviews h4{
+    text-decoration: underline;
+    font-weight:500;
+}
+.admin-action-banner {
+
+    padding:  25px 0px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-action-info h3 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 18px;
+    font-weight: 400;
+    text-decoration: underline;
+}
+
+.admin-action-info p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    margin-top:10px;
+}
+
+.admin-action-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.admin-btn-approve {
+    background-color: #AD9292;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+
+.admin-btn-approve:hover {
+    background-color: #218838;
+}
+
+.admin-btn-reject {
+    background-color: #f1f1f1;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+
+
+
+.reject-modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 25px;
+    width: 400px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.reject-modal-content h3 {
+    margin-top: 0;
+    color: #333;
+    font-weight: 400;
+    margin-bottom:5px;
+}
+
+.reject-modal-content p {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 15px;
+    margin-top:0;
+}
+
+.reject-modal-content textarea {
+    width: 380px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.reject-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.admin-btn-cancel {
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #f1f1f1;
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+}
+
+.admin-btn-cancel:hover {
+    background: #e2e2e2;
+}
+
+.admin-btn-submit-reject {
+    padding: 8px 15px;
+    border-radius: 6px;
+    border: none;
+    background: #AD9292;
+    color: white;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.admin-btn-submit-reject:hover {
+    background: #c82333;
+}
+.rejected-property-reason-content{
+    max-width: 1250px;
+    background-color: #FFE0E0;
+    padding: 20px 30px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+
+}
+.rejected-property-reason-content h3{
+    margin-top:0;
+    margin-bottom:10px;
+    font-weight: 400;
+}
+.rejected-property-reason-content p{
+    margin-top:0;
+    margin-bottom:10px;
+    font-size:14px;
+    color:#717171;
+}
+.general-details-row{
+    display: flex;
+
+    align-items: center;
+    margin-bottom: 10px;
+}
+.icon-new{
+    background-color: #FFE0E0;
+    color:#C22B2B !important;
+    font-weight: 400;
+    font-size:13px;
+    padding: 2px 15px;
+    border-radius: 10px;
+}
+.general-details-updated {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 8px;
+}
+.general-details .title {
+    font-weight:400;
+    margin-right:5px;
+    font-size:14px;
+}
+.general-details-value{
+    color:#717171;
+    font-size: 14px;
+}
+.updated-property-description{
+    padding: 15px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    word-spacing: 2px;
+    background-color: #FFE0E0;
+    border-radius:6px;
+    color:#717171;
+    font-size:14px;
+    position: relative;
+}
+.updated-property-description .icon-new{
+    position:absolute;
+    bottom:5px;
+    right:5px;
+}
+
+.details-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.details-updated {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 8px;
+}
+.details-row .title,.details-row .details-value{
+    font-size:14px;
+    color:#717171;
+
+}
+.details-row{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background-color: #f9f9f9;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.property-image.new-draft {
+    border: 4px solid #FFE0E0;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.icon-new-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 1;
+}

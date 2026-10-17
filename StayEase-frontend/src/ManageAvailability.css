@@ -1,0 +1,201 @@
+.manage-availability-page .property-main-content {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+.manage-availability-page .property-main-content h2 {
+    font-weight: 500;
+    font-size: 22px;
+    color: #222222;
+}
+.manage-availability-page .page-description {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.manage-availability-page .availability-calendar-section {
+    padding: 30px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.manage-availability-page .custom-calendar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Info Perioadă Selectată */
+.manage-availability-page .selected-dates-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.manage-availability-page .selected-dates-info p {
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+}
+.manage-availability-page .selected-dates-info strong {
+    font-size: 14px;
+    font-weight: 600;
+}
+.manage-availability-page .empty-selection-text {
+    font-style: italic;
+    color: #999;
+}
+
+/* ============================================================== */
+/* BUTOANE (Proporții 20% / 80% pe toată lățimea)                 */
+/* ============================================================== */
+.manage-availability-page .calendar-footer-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+    align-items: center;
+}
+
+.manage-availability-page .clear-dates-btn {
+    flex: 1;
+    padding: 14px 0;
+    background: #f7f7f7;
+    color: #222;
+    border:0;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: center;
+}
+
+.manage-availability-page .clear-dates-btn:hover {
+    background-color: #f7f7f7;
+}
+
+.manage-availability-page .book-button {
+    flex: 4; /* Ocupă aprox 80% din spațiu */
+    padding: 14px 0;
+    background: #B39898;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-align: center;
+}
+
+.manage-availability-page .book-button:hover:not(:disabled) {
+    opacity: 0.9;
+}
+
+.manage-availability-page .book-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================================== */
+/* DESIGN CALENDAR PRELUAT DIN PROPERTY DETAILS                   */
+/* ============================================================== */
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar {
+    width: 100%;
+    max-width: 750px;
+    background: white;
+    border: none;
+    font-family: inherit;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__navigation {
+    display: flex;
+    height: 44px;
+    margin-bottom: 1em;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__navigation button {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222222;
+    background: none;
+    border: none;
+    border-radius: 50%;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__navigation button:enabled:hover {
+    background-color: #f7f7f7;
+}
+
+.manage-availability-page .react-calendar__navigation__label span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.manage-availability-page .react-calendar__navigation__prev-button,
+.manage-availability-page .react-calendar__navigation__next-button {
+    font-weight: bold !important;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__month-view__weekdays {
+    text-align: center;
+    font-weight: 600;
+    font-size: 12px;
+    color: #717171;
+    text-transform: uppercase;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+    font-weight: 500 !important;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__tile {
+    height: 48px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #222222;
+    background: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__tile:enabled:hover {
+    background-color: #f7f7f7;
+    border-radius: 50%;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__tile--active {
+    background: #222222 !important;
+    color: white !important;
+    border-radius: 50% !important;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__tile--selectRange {
+    background: #f7f7f7;
+    border-radius: 0;
+    color: #222222 !important;
+}
+
+/* Modificare cerută: Datele blocate/trecute sunt gri și fără linie tăiată */
+.manage-availability-page .custom-calendar-wrapper .react-calendar__tile:disabled {
+    background-color: transparent !important;
+    color: #b0b0b0 !important;
+    text-decoration: none !important;
+    cursor: default !important;
+}
+
+.manage-availability-page .custom-calendar-wrapper .react-calendar__month-view__days__day--neighboringMonth {
+    visibility: hidden !important;
+}
+
+/* Stări de încărcare/eroare */
+.manage-availability-page .loader-container,
+.manage-availability-page .error-container {
+    text-align: center;
+    margin-top: 50px;
+}

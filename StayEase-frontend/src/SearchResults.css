@@ -1,0 +1,154 @@
+* {
+    font-family: "Google Sans Flex", sans-serif;
+}
+
+.search-results-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
+    justify-content: center;
+    gap: 3rem 2rem;
+    margin-top: 2rem;
+}
+
+.property-card {
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.01);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+}
+
+.property-image-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+.property-image {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 30px;
+    display: block;
+}
+
+.rating-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* === Stiluri noi pentru Butonul de Favorite === */
+.property-card .favorite-btn {
+    position: absolute ;
+    top: 12px;
+    right: 12px;
+    background: transparent ;
+    border: none ;
+    cursor: pointer;
+    padding: 0 ;
+    z-index: 10 ;
+    transition: transform 0.2s ease ;
+}
+
+.property-card  .favorite-btn:hover {
+    transform: scale(1.1) ;
+}
+
+.property-card  .favorite-btn svg {
+    display: block  ;
+    fill: rgba(0, 0, 0, 0.5) ;
+    stroke: #ffffff ;
+    stroke-width: 2px ;
+    width: 26px ;
+    height: 26px ;
+    transition: fill 0.2s ease, stroke 0.2s ease ;
+}
+
+/* Când vei dori să îl faci activ/roșu, vei putea folosi clasa asta:
+.favorite-btn.active svg {
+    fill: #ff385c;
+    stroke: #ffffff;
+}
+*/
+
+.property-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+.property-info h3 {
+    margin-top: 12px;
+    margin-bottom: 7px;
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+}
+
+.property-location {
+    color: #575252;
+    font-size: 15px;
+    margin-bottom: 16px;
+    font-weight: 300;
+}
+
+.property-details-mini {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #575252;
+    margin-bottom: 5px;
+    font-weight: 300;
+}
+
+.property-details-capacity {
+    display: flex;
+    gap: 5px;
+}
+
+.property-price-row {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.price {
+    font-size: 12px;
+    color: #575252;
+}
+
+p.property-location {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+.favorite-btn.active svg {
+    fill: #ffffff;
+    stroke: #ffffff;
+}

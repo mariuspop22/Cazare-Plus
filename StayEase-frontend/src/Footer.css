@@ -1,0 +1,138 @@
+.site-footer {
+    background-color: white;
+    color: #333333;
+    padding: 40px 0 0 0;
+    font-family: inherit;
+    margin-top: 100px;
+    border-top: 1px solid #eaeaea;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    color: #222222;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.footer-column h3{
+    font-weight: 400;
+}
+.brand-column {
+    flex: 2;
+    min-width: 250px;
+}
+
+.footer-logo {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #222222;
+}
+
+.footer-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #717171;
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: #717171;
+    font-size: 20px;
+    transition: color 0.2s ease;
+}
+
+.social-links a:hover {
+    color: #B39898;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #717171;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: #222222;
+    padding-left: 5px;
+}
+
+.footer-contact-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-contact-info li {
+    color: #717171;
+    font-size: 14px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left:0;
+}
+
+.footer-contact-info i {
+    color: #B39898;
+    font-size: 16px;
+}
+
+
+.footer-bottom {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #eaeaea;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #717171;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-column {
+        min-width: 100%;
+    }
+}
