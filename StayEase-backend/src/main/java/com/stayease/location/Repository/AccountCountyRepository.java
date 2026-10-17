@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AccountCountyRepository extends JpaRepository<AccountCounty, Integer> {
 
@@ -18,4 +19,6 @@ public interface AccountCountyRepository extends JpaRepository<AccountCounty, In
     List<AccountCounty> searchWithoutDiacritics(@Param("query") String query, Pageable pageable);
 
     List<AccountCounty> findAllByOrderByNameAsc();
+    Optional<AccountCounty> findByName(String name);
+
 }

@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StandardFacilityRepository extends JpaRepository<StandardFacility, Long> {
 
     @Query("SELECT f FROM StandardFacility f JOIN FETCH f.category")
     List<StandardFacility> findAllWithCategory();
+    Optional<StandardFacility> findByName(String name);
 }

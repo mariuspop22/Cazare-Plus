@@ -100,7 +100,6 @@ const SimilarPropertiesCarousel = ({ properties, navigate }) => {
     );
 };
 
-// --- COMPONENTA PRINCIPALĂ ---
 const PropertyDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();

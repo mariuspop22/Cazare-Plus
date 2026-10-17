@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 // AM SCHIMBAT AICI: de la Long la Integer
 public interface AccountCityRepository extends JpaRepository<AccountCity, Integer> {
@@ -19,4 +20,5 @@ public interface AccountCityRepository extends JpaRepository<AccountCity, Intege
     List<AccountCity> searchWithoutDiacritics(@Param("query") String query, Pageable pageable);
 
     List<AccountCity> findByCountyIdOrderByNameAsc(Integer countyId);
+    Optional<AccountCity> findByName(String name);
 }

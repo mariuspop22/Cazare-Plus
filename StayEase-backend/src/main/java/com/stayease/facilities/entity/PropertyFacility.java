@@ -23,7 +23,7 @@ public class PropertyFacility {
     private Property property;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id",nullable = true)
     private FacilityCategory category;
 
     @ManyToOne(fetch = FetchType.LAZY)

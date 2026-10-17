@@ -11,6 +11,8 @@ import AdminPendingProperties from './AdminPendingProperties';
 import AdminPendingPropertyDetails from './AdminPendingPropertyDetails';
 import OwnerProperties from "./OwnerProperties.jsx";
 import EditRejectedProperty from "./EditRejectedProperty.jsx"
+import AdminPendingEditedProperties from "./AdminPendingEditedProperties.jsx";
+import AdminPendingPropertyModificationsDetails from "./AdminPendingPropertyModificationsDetails.jsx";
 function App() {
     return (
         <Router>
@@ -27,6 +29,8 @@ function App() {
                 <Route path="/admin/property/:id" element={<AdminPendingPropertyDetails/>}/>
                 <Route path="/owner/properties" element={<OwnerProperties/>}/>
                 <Route path="/owner/edit-rejected-property/:id" element={<EditRejectedProperty/>}/>
+                <Route path="/admin/pending-edited-properties" element={<AdminPendingEditedProperties/>}/>
+                <Route path="/admin/get-property-modifications-details/:id" element={<AdminPendingPropertyModificationsDetails/>}/>
             </Routes>
         </Router>
     );

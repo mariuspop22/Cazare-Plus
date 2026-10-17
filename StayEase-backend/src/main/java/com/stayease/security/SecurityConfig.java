@@ -51,6 +51,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/owner/**").authenticated()
                         .requestMatchers("/api/booking/**").authenticated()
                         .requestMatchers("api/admin/**").permitAll()
+                        .requestMatchers("api/properties/admin/**").permitAll()
+
 
                         // 7. Orice altceva
                         .anyRequest().authenticated()
