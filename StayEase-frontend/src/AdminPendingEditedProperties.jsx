@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import './AdminPendingProperties.css';
+import { API_BASE_URL } from './config';
 
 const AdminPendingEditedProperties= () =>{
     const [pendingEditedProperties,setPendingEditedProperties]= useState([]);
@@ -10,7 +11,7 @@ const AdminPendingEditedProperties= () =>{
     const [error, setError] = useState(null);
     const fetchPendingEditedProperties = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/properties/admin/get-pending-edited-properties');
+            const response = await fetch(`${API_BASE_URL}/api/properties/admin/get-pending-edited-properties`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
 
             const data = await response.json();

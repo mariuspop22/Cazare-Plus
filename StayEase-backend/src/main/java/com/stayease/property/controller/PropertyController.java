@@ -25,7 +25,6 @@ public class PropertyController {
 
     private final PropertyService propertyService;
     private final PropertyDisplayService propertyDisplayService;
-    private final PropertySearchService propertySearchService;
 
     @GetMapping("/featured")
     public ResponseEntity<List<PropertyResponseDto>> getFeaturedProperties() {
@@ -58,11 +57,7 @@ public class PropertyController {
         return ResponseEntity.ok(propertyDetails);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Property>> searchProperties(@ModelAttribute PropertySearchRequestDto request) {
-        List<Property> properties = propertySearchService.searchProperties(request);
-        return ResponseEntity.ok(properties);
-    }
+
     @GetMapping("/{id}/similar")
     public ResponseEntity<List<PropertyDetailsDTO>> getSimilarProperties(@PathVariable Long id) {
         List<PropertyDetailsDTO> similarProperties = propertyService.getSimilarProperties(id);

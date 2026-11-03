@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './OwnerProfile.css';
 import Header from "./Header.jsx";
+import { API_BASE_URL } from './config';
 
 const OwnerProfile = () => {
     const [profile, setProfile] = useState(null);
@@ -16,7 +17,7 @@ const OwnerProfile = () => {
 
     const fetchProfile = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/owner/profile', {
+            const response = await fetch(`${API_BASE_URL}/api/owner/profile`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -62,7 +63,7 @@ const OwnerProfile = () => {
         if (file) updateData.append('profilePicture', file);
 
         try {
-            await fetch('http://localhost:8080/api/owner/profile', {
+            await fetch(`${API_BASE_URL}/api/owner/profile`, {
                 method: 'PUT',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: updateData

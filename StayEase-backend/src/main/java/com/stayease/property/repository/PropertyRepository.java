@@ -3,6 +3,7 @@ package com.stayease.property.repository;
 import com.stayease.property.Enums.PropertyType;
 import com.stayease.property.entity.Property;
 import com.stayease.property.Enums.PropertyStatus;
+import com.stayease.property.search.dto.PropertyFacilityDTO;
 import com.stayease.users.Owner.OwnerStatsProjection;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -57,7 +58,8 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
             @Param("rooms") Integer rooms
     );
 
-    // 1. Căutare EXACTĂ în oraș (locație, camere, persoane + preț)
+
+
     @Query("SELECT p FROM Property p WHERE p.id NOT IN :excludedIds " +
             "AND p.status = com.stayease.property.Enums.PropertyStatus.APPROVED " +
             "AND (p.accountCity.id = :cityId OR (p.accountCity IS NULL AND LOWER(p.city) = LOWER(:cityName))) " +

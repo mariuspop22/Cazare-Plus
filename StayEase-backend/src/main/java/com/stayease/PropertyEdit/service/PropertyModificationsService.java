@@ -1,5 +1,8 @@
 package com.stayease.PropertyEdit.service;
 
+import com.stayease.PropertyEdit.Repository.PropertyEditDraftRepository;
+import com.stayease.PropertyEdit.entity.PropertyEditDraft;
+import com.stayease.PropertyEdit.enums.DraftStatus;
 import com.stayease.facilities.entity.FacilityCategory;
 import com.stayease.facilities.entity.PropertyFacility;
 import com.stayease.facilities.entity.StandardFacility;
@@ -31,20 +34,22 @@ public class PropertyModificationsService {
     private final PropertyFacilityRepository propertyFacilityRepository;
     private final PropertyImageRepository propertyImageRepository;
     private final PropertyRepository propertyRepository;
-private final AccountCityRepository accountCityRepository;
-private final AccountCountyRepository accountCountyRepository;
+    private final AccountCityRepository accountCityRepository;
+    private final AccountCountyRepository accountCountyRepository;
+    private final PropertyEditDraftRepository propertyEditDraftRepository;
 
-
-    public PropertyModificationsService(FacilityCategoryRepository facilityCategoryRepository,StandardFacilityRepository standardFacilityRepository,
-                                        PropertyFacilityRepository propertyFacilityRepository,PropertyImageRepository propertyImageRepository,
-                                        PropertyRepository propertyRepository,AccountCityRepository accountCityRepository,AccountCountyRepository accountCountyRepository){
-        this.facilityCategoryRepository=facilityCategoryRepository;
-        this.standardFacilityRepository=standardFacilityRepository;
-        this.propertyFacilityRepository=propertyFacilityRepository;
-        this.propertyImageRepository=propertyImageRepository;
-        this.propertyRepository=propertyRepository;
-        this.accountCityRepository=accountCityRepository;
-        this.accountCountyRepository=accountCountyRepository;
+    public PropertyModificationsService(FacilityCategoryRepository facilityCategoryRepository, StandardFacilityRepository standardFacilityRepository,
+                                        PropertyFacilityRepository propertyFacilityRepository, PropertyImageRepository propertyImageRepository,
+                                        PropertyRepository propertyRepository, AccountCityRepository accountCityRepository, AccountCountyRepository accountCountyRepository,
+                                        PropertyEditDraftRepository propertyEditDraftRepository) {
+        this.facilityCategoryRepository = facilityCategoryRepository;
+        this.standardFacilityRepository = standardFacilityRepository;
+        this.propertyFacilityRepository = propertyFacilityRepository;
+        this.propertyImageRepository = propertyImageRepository;
+        this.propertyRepository = propertyRepository;
+        this.accountCityRepository = accountCityRepository;
+        this.accountCountyRepository = accountCountyRepository;
+        this.propertyEditDraftRepository=propertyEditDraftRepository;
     }
 
 
@@ -77,9 +82,10 @@ private final AccountCountyRepository accountCountyRepository;
             property.setSiruta(accountCity.getSiruta());
         }
 
-        if (payload.containsKey("county") ){  String county=(String) payload.get("county");
-            AccountCounty accountCounty= accountCountyRepository.findByName(county)
-                            .orElseThrow(() -> new RuntimeException("Judetul nu a fost găsit: " + county));
+        if (payload.containsKey("county")) {
+            String county = (String) payload.get("county");
+            AccountCounty accountCounty = accountCountyRepository.findByName(county)
+                    .orElseThrow(() -> new RuntimeException("Judetul nu a fost găsit: " + county));
             property.setCounty((String) payload.get("county"));
             property.setCounty(county);
             property.setAccountCounty(accountCounty);
@@ -101,18 +107,17 @@ private final AccountCountyRepository accountCountyRepository;
                 boolean isCustomFacility = (Boolean) facData.getOrDefault("_custom_facility", false);
                 boolean isCustomBoth = (Boolean) facData.getOrDefault("_custom_category_and_custom_facility", false);
 
-                if(isCustomBoth){
+                if (isCustomBoth) {
                     pf.setCustomCategoryName(categoryName);
                     pf.setCustomName(facilityName);
 
-                }else if(isCustomFacility){
+                } else if (isCustomFacility) {
                     FacilityCategory category = facilityCategoryRepository.findByName(categoryName)
                             .orElseThrow(() -> new RuntimeException("Categoria standard nu a fost găsită"));
                     pf.setCategory(category);
                     pf.setCustomName(facilityName);
 
-                }
-                else if(!isCustomCategory && !isCustomFacility && !isCustomBoth){
+                } else if (!isCustomCategory && !isCustomFacility && !isCustomBoth) {
                     FacilityCategory category = facilityCategoryRepository.findByName(categoryName)
                             .orElseThrow(() -> new RuntimeException("Categoria standard nu a fost găsită"));
                     pf.setCategory(category);
@@ -128,6 +133,7 @@ private final AccountCountyRepository accountCountyRepository;
             List<Map<String, Object>> newImages = (List<Map<String, Object>>) payload.get("newImages");
             for (Map<String, Object> imgMap : newImages) {
                 PropertyImage newImage = new PropertyImage();
+
                 newImage.setProperty(property);
                 String base64String = (String) imgMap.get("base64Data");
                 if (base64String != null) {
@@ -145,5 +151,15 @@ private final AccountCountyRepository accountCountyRepository;
             propertyRepository.save(property);
         }
 
+    }
+
+    public void rejectPropertyModifications(Property property, String reason) {
+        PropertyEditDraft draft = propertyEditDraftRepository.findByPropertyId(property.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Nu s-a găsit niciun draft pentru această proprietate."));
+
+        draft.setStatus(DraftStatus.REJECTED);
+        draft.setRejectionReason(reason);
+
+        propertyEditDraftRepository.save(draft);
     }
 }

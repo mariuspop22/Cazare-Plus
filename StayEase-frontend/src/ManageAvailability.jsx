@@ -4,6 +4,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import Header from './Header';
 import './ManageAvailability.css';
+import { API_BASE_URL } from './config';
 
 const ManageAvailability = () => {
     const { id } = useParams();
@@ -17,7 +18,7 @@ const ManageAvailability = () => {
 
     const fetchUnavailablePeriods = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/properties/${id}/UnavailablePeriods`);
+            const response = await fetch(`${API_BASE_URL}/api/properties/${id}/UnavailablePeriods`);
             if (!response.ok) throw new Error('Nu am putut încărca perioadele indisponibile.');
 
             const data = await response.json();
@@ -71,7 +72,7 @@ const ManageAvailability = () => {
         };
 
         try {
-            const response = await fetch(`http://localhost:8080/api/properties/${id}/UnavailablePeriods`, {
+            const response = await fetch(`${API_BASE_URL}/api/properties/${id}/UnavailablePeriods`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

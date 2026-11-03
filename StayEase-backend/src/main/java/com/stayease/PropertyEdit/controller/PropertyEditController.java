@@ -1,6 +1,7 @@
 package com.stayease.PropertyEdit.controller;
 
 import com.stayease.EmailService.EmailService;
+import com.stayease.PropertyEdit.dtos.EditedPropertyDetailsDto;
 import com.stayease.PropertyEdit.dtos.PropertyDraftDataDto;
 import com.stayease.PropertyEdit.entity.PropertyEditDraft;
 import com.stayease.PropertyEdit.service.PropertyEditDraftService;
@@ -8,9 +9,15 @@ import com.stayease.PropertyEdit.service.PropertyModificationsService;
 import com.stayease.property.dto.AdminPendingPropertyResponseDto;
 import com.stayease.property.entity.Property;
 import com.stayease.property.repository.PropertyRepository;
+import com.stayease.users.Acount.User;
+import com.stayease.users.Acount.UserRepository;
+import com.stayease.users.Owner.entity.Owner;
+import com.stayease.users.Owner.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+
 
 import java.util.List;
 import java.util.Map;
@@ -26,6 +33,8 @@ public class PropertyEditController {
     private final PropertyRepository propertyRepository;
     private final PropertyModificationsService propertyModificationsService;
     private final EmailService emailService;
+    private final UserRepository userRepository;
+    private  final  OwnerRepository ownerRepository;
     /**
      * Endpoint apelat din React când proprietarul apasă pe "Salvează Modificările"
      * URL exemplu: POST http://localhost:8080/api/properties/9/draft?userId=2
@@ -77,5 +86,33 @@ public class PropertyEditController {
         }
 
         return ResponseEntity.ok().body("Modificarile au fost aprobate cu succes, modificările au fost salvate și emailul a fost trimis.");
+    }
+    @PutMapping("/admin/reject-property-modifications/{id}")
+    public ResponseEntity<?> rejectPropertyModifications(@PathVariable Long id,@RequestBody Map<String, String> payload){
+        Optional<Property> optionalProperty = propertyRepository.findById(id);
+        if (optionalProperty.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Property property = optionalProperty.get();
+        String reason = payload.get("reason");
+
+        propertyModificationsService.rejectPropertyModifications(property,reason);
+        if (property.getOwner() != null && property.getOwner().getUser().getEmail() != null) {
+            String ownerEmail = property.getOwner().getUser().getEmail();
+            String propertyTitle = property.getTitle();
+
+            emailService.sendPropertyModificationsRejectEmail(ownerEmail, propertyTitle, reason);
+        }
+        return ResponseEntity.ok().body("Modificarile au fost respinse și emailul a fost trimis.");
+
+    }
+    @GetMapping("/owner/get-pending-edited-properties")
+    public ResponseEntity<List<EditedPropertyDetailsDto>> getOwnerPendingEdidedProperties(Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Userul cu email-ul " + email + " nu a fost găsită"));
+        Long user_id=user.getId();
+        List<EditedPropertyDetailsDto> pendingOwnerEdidedProperties=draftService.getOwnerPendingEdidedProperties(user_id);
+        return  ResponseEntity.ok(pendingOwnerEdidedProperties);
     }
 }

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./RegisterModal.css";
+import { API_BASE_URL } from './config';
 
 function RegisterModal({ isOpen, onClose }) {
     const [formData, setFormData] = useState({
         firstname: "",
         lastname: "",
         email: "",
-        passwordhash: "" // Am schimbat din "parola"
+        passwordhash: ""
     });
 
     if (!isOpen) return null;
@@ -17,36 +18,30 @@ function RegisterModal({ isOpen, onClose }) {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Previne reîncărcarea paginii la submit
+        e.preventDefault();
         console.log("Date trimise pentru înregistrare:", formData);
 
         try {
-            // Facem request-ul către backend-ul nostru (recepționerul)
-            const response = await fetch("http://localhost:8080/api/register/owner", {
-                method: "POST", // Trebuie să fie POST, exact cum am definit în Controller
+            const response = await fetch(`${API_BASE_URL}/api/register/owner`, {
+                method: "POST",
                 headers: {
-                    "Content-Type": "application/json" // Îi spunem backend-ului că trimitem date în format JSON
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify(formData) // Transformăm obiectul nostru în text JSON (cutia de care vorbeam)
+                body: JSON.stringify(formData)
             });
 
-            // Verificăm dacă răspunsul este cu succes (ex: 200 OK)
             if (response.ok) {
                 const message = await response.text();
-                alert(message); // Afișează: "Contul de gazdă a fost creat cu succes!"
+                alert(message);
 
-                // Opțional: Curățăm formularul după succes
                 setFormData({ nume: "", prenume: "", email: "", parola: "" });
 
-                // Închidem modalul
                 onClose();
             } else {
-                // Dacă backend-ul a returnat o eroare (ex: email-ul există deja)
                 const errorData = await response.text();
                 alert("Eroare: " + errorData);
             }
         } catch (error) {
-            // Această eroare apare dacă backend-ul este oprit complet sau pică rețeaua
             console.error("Eroare la conexiune:", error);
             alert("Nu ne-am putut conecta la server. Verifică dacă backend-ul este pornit.");
         }

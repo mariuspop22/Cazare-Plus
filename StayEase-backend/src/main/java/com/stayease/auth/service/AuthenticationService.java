@@ -1,7 +1,5 @@
 package com.stayease.auth.service;
 
-
-
 import com.stayease.auth.JwtService;
 import com.stayease.auth.dto.AuthenticationRequest;
 import com.stayease.auth.dto.AuthenticationResponse;
@@ -34,6 +32,7 @@ public class AuthenticationService {
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getId())
                 .build();
     }
 }

@@ -22,4 +22,11 @@ public interface PropertyEditDraftRepository extends JpaRepository<PropertyEditD
 
     @Query("SELECT p.propertyId FROM PropertyEditDraft p WHERE p.status = :status")
     List<Long> findPropertyIdsByStatus(@Param("status") DraftStatus status);
+
+
+    @Query("SELECT p FROM PropertyEditDraft p WHERE p.userId = :userId")
+    List<PropertyEditDraft> findPropertiesDraftByUserId(
+            @Param("userId") Long user_id
+    );
+
 }

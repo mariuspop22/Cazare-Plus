@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import {
     TbSmokingNo,
     TbBan,
@@ -18,6 +19,7 @@ import {
 import stars from "./assets/stars.png";
 
 import './AdminPendingPropertyDetails.css';
+import { API_BASE_URL } from './config';
 
 const categoryIconStyle = {
     fontSize: '22px',
@@ -65,7 +67,7 @@ const AdminPendingPropertyDetails = () => {
 
     const fetchPropertyDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/properties/${id}`);
+            const response = await fetch(`${API_BASE_URL}/api/properties/${id}`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
 
             const data = await response.json();
@@ -87,7 +89,7 @@ const AdminPendingPropertyDetails = () => {
 
     const fetchPropertyFacilities = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/facilities/property/${id}`);
+            const response = await fetch(`${API_BASE_URL}/api/facilities/property/${id}`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
 
             const data = await response.json();
@@ -108,7 +110,7 @@ const AdminPendingPropertyDetails = () => {
 
     const fetchOwnerApprovedProperties = async (ownerId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/owner/${ownerId}/properties`);
+            const response = await fetch(`${API_BASE_URL}/api/owner/${ownerId}/properties`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
             const data = await response.json();
             setOwnerApprovedProperties(data);
@@ -125,7 +127,7 @@ const AdminPendingPropertyDetails = () => {
 
     const fetchOwnerAvarageRatingAndReview = async (ownerId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/owner/${ownerId}/stats`);
+            const response = await fetch(`${API_BASE_URL}/api/owner/${ownerId}/stats`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
             const data = await response.json();
             setAverageRatingAndReview(data);
@@ -145,7 +147,7 @@ const AdminPendingPropertyDetails = () => {
         if (draftUpdateRejectedProperty){
             try {
                 const payload = buildApprovalPayload();
-                const response = await fetch(`http://localhost:8080/api/admin/properties/${id}/approve-rejected-property`, {
+                const response = await fetch(`${API_BASE_URL}/api/admin/properties/${id}/approve-rejected-property`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -164,7 +166,7 @@ const AdminPendingPropertyDetails = () => {
         }else {
             setActionLoading(true);
             try {
-                const response = await fetch(`http://localhost:8080/api/admin/properties/${id}/approve`, {
+                const response = await fetch(`${API_BASE_URL}/api/admin/properties/${id}/approve`, {
                     method: 'PUT',
                     headers: {'Content-Type': 'application/json'}
                 });
@@ -190,7 +192,7 @@ const AdminPendingPropertyDetails = () => {
 
         setActionLoading(true);
         try {
-            const response = await fetch(`http://localhost:8080/api/admin/properties/${id}/reject`, {
+            const response = await fetch(`${API_BASE_URL}/api/admin/properties/${id}/reject`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ reason: rejectionReason })
@@ -314,7 +316,7 @@ const AdminPendingPropertyDetails = () => {
     const fetchDraftUpdatedRejectedProperty = async () => {
         try {
             const token = localStorage.getItem('jwtToken');
-            const response = await fetch(`http://localhost:8080/api/properties/pending-owner-update-rejected-property/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/properties/pending-owner-update-rejected-property/${id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': token ? `Bearer ${token}` : ''

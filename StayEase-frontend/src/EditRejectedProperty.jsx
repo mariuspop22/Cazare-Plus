@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './AddProperty.css';
 import Header from './Header.jsx';
+import { API_BASE_URL } from './config';
 
 const removeDiacritics = (str) => {
     if (!str) return "";
@@ -55,9 +56,9 @@ const EditProperty = () => {
         const loadData = async () => {
             try {
                 const [propRes, facRes, countiesRes] = await Promise.all([
-                    fetch(`http://localhost:8080/api/properties/${id}`),
-                    fetch('http://localhost:8080/api/facilities/grouped'),
-                    fetch('http://localhost:8080/api/locations/counties')
+                    fetch(`${API_BASE_URL}/api/properties/${id}`),
+                    fetch(`${API_BASE_URL}/api/facilities/grouped`),
+                    fetch(`${API_BASE_URL}/api/locations/counties`)
                 ]);
 
                 if (!propRes.ok) {
@@ -153,7 +154,7 @@ const EditProperty = () => {
 
     useEffect(() => {
         if (selectedCountyId) {
-            fetch(`http://localhost:8080/api/locations/counties/${selectedCountyId}/cities`)
+            fetch(`${API_BASE_URL}/api/locations/counties/${selectedCountyId}/cities`)
                 .then(response => response.json())
                 .then(data => {
                     setCities(data);
@@ -396,7 +397,7 @@ const EditProperty = () => {
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetch(`http://localhost:8080/api/properties/edit-rejected-property/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/properties/edit-rejected-property/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

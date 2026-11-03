@@ -11,6 +11,7 @@ import {
     TbBell, TbTree, TbStar, TbInfoCircle, TbCheck, TbBuildingCommunity
 } from 'react-icons/tb';
 import Footer from "./Footer.jsx";
+import { API_BASE_URL } from './config';
 
 const SimilarPropertiesCarousel = ({ properties, navigate }) => {
     const scrollRef = useRef(null);
@@ -137,11 +138,10 @@ const PropertyDetails = () => {
         "Reguli generale": <TbInfoCircle style={categoryIconStyle} />
     };
 
-    // Preluare detalii proprietate
     useEffect(() => {
         const fetchPropertyDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/${id}`);
+                const response = await fetch(`${API_BASE_URL}/api/properties/${id}`);
                 if (!response.ok) throw new Error('Nu am putut încărca datele proprietății.');
 
                 const data = await response.json();
@@ -167,7 +167,7 @@ const PropertyDetails = () => {
     useEffect(() => {
         const fetchPropertyReviews = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/${id}/reviews`);
+                const response = await fetch(`${API_BASE_URL}/api/properties/${id}/reviews`);
                 if (response.ok) {
                     const propertyReviews = await response.json();
                     setPropertyReviews(propertyReviews);
@@ -179,11 +179,10 @@ const PropertyDetails = () => {
         if (id) fetchPropertyReviews();
     }, [id]);
 
-    // Preluare Numar Recenzii
     useEffect(() => {
         const fetchReviewCount = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/reviews/property/${id}/count`);
+                const response = await fetch(`${API_BASE_URL}/api/reviews/property/${id}/count`);
                 if (response.ok) {
                     const count = await response.json();
                     setReviewCount(count);
@@ -199,7 +198,7 @@ const PropertyDetails = () => {
     useEffect(() => {
         const fetchRatingCount = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/${id}/average-rating`);
+                const response = await fetch(`${API_BASE_URL}/api/properties/${id}/average-rating`);
                 if (response.ok) {
                     const data = await response.json();
                     setRatingCount(data.rating);
@@ -215,7 +214,7 @@ const PropertyDetails = () => {
     useEffect(() => {
         const fetchSimilarProperties = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/${id}/similar`);
+                const response = await fetch(`${API_BASE_URL}/api/properties/${id}/similar`);
                 if (response.ok) {
                     const data = await response.json();
                     setSimilarProperties(data);
@@ -233,7 +232,7 @@ const PropertyDetails = () => {
         const token = localStorage.getItem("jwtToken");
         if (!token) return;
         try {
-            const response = await fetch(`http://localhost:8080/api/favorites/check/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/favorites/check/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.ok) {
@@ -253,7 +252,7 @@ const PropertyDetails = () => {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8080/api/favorites/toggle/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/favorites/toggle/${id}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

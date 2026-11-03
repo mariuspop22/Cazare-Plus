@@ -24,12 +24,10 @@ public class LocationController {
         List<LocationSearchResultDto> results = locationSearchService.searchLocations(query);
         return ResponseEntity.ok(results);
     }
-// get al counties
     @GetMapping("/counties")
     public ResponseEntity<List<CountyDTO>> getAllCounties() {
         return ResponseEntity.ok(locationSearchService.getAllCounties());
     }
-// get all county from a specific county
     @GetMapping("/counties/{countyId}/cities")
     public ResponseEntity<List<CityDTO>> getCitiesByCounty(@PathVariable Integer countyId) {
         return ResponseEntity.ok(locationSearchService.getCitiesByCounty(countyId));

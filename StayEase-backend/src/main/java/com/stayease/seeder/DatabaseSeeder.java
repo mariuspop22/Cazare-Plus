@@ -27,7 +27,6 @@ public class DatabaseSeeder implements CommandLineRunner {
 
             Property property = propertyRepository.findById(9L).orElse(null);
 
-            // 3. Găsim câțiva chiriași existenți (Căutăm ID-urile 1L și 2L)
             Renter renter1 = renterRepository.findById(1L).orElse(null);
             Renter renter2 = renterRepository.findById(2L).orElse(null);
 

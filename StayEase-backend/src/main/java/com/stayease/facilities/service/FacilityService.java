@@ -24,7 +24,6 @@ public class FacilityService {
     private final PropertyFacilityRepository propertyFacitityRepository;
 
     public List<CategoryWithFacilitiesDto> getFacilitiesGroupedByCategory() {
-        // 1. Luăm toate facilitățile din baza de date
         List<StandardFacility> allFacilities = facilityRepository.findAllWithCategory();
 
         Map<FacilityCategory, List<StandardFacility>> groupedFacilities = allFacilities.stream()

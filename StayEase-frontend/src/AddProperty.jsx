@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AddProperty.css';
+import { API_BASE_URL } from './config';
 import Header from "./Header.jsx";
 
 const removeDiacritics = (str) => {
@@ -33,7 +34,6 @@ const AddProperty = () => {
     const [newCategoryName, setNewCategoryName] = useState('');
     const isAuthenticated = !!localStorage.getItem('jwtToken');
 
-    // === STĂRI LOCAȚII & ID-URI ===
     const [counties, setCounties] = useState([]);
     const [cities, setCities] = useState([]);
     const [countySearch, setCountySearch] = useState('');
@@ -47,12 +47,12 @@ const AddProperty = () => {
 
     // 1. Fetch facilități și județe la încărcarea paginii
     useEffect(() => {
-        fetch("http://localhost:8080/api/facilities/grouped")
+        fetch(`${API_BASE_URL}/api/facilities/grouped`)
             .then(response => response.json())
             .then(data => setStandardFacilities(data))
             .catch(error => console.error("Eroare facilități:", error));
 
-        fetch("http://localhost:8080/api/locations/counties")
+        fetch(`${API_BASE_URL}/api/locations/counties`)
             .then(response => response.json())
             .then(data => setCounties(data))
             .catch(error => console.error("Eroare la preluarea județelor:", error));
@@ -61,7 +61,7 @@ const AddProperty = () => {
     // 2. Fetch orașe atunci când un județ este selectat
     useEffect(() => {
         if (selectedCountyId) {
-            fetch(`http://localhost:8080/api/locations/counties/${selectedCountyId}/cities`)
+            fetch(`${API_BASE_URL}/api/locations/counties/${selectedCountyId}/cities`)
                 .then(response => response.json())
                 .then(data => setCities(data))
                 .catch(error => console.error("Eroare la preluarea orașelor:", error));
@@ -240,7 +240,7 @@ const AddProperty = () => {
 
         try {
             const token = localStorage.getItem('jwtToken');
-            const response = await fetch('http://localhost:8080/api/properties', {
+            const response = await fetch(`${API_BASE_URL}/api/properties`, {
                 method: 'POST',
                 headers: { ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
                 body: submitData

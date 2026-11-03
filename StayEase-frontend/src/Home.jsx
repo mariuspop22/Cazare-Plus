@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { FaBed, FaCalendarAlt, FaUser, FaMapMarkerAlt, FaFire, FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { API_BASE_URL } from './config';
 
 const DestinationCarousel = ({ dest, properties, navigate }) => {
     const scrollRef = useRef(null);
@@ -24,7 +25,6 @@ const DestinationCarousel = ({ dest, properties, navigate }) => {
     };
 
     const getPropertyImage = (property) => {
-        // 1. Căutăm imaginea marcată cu mainImage: true în array-ul images
         if (property.images && property.images.length > 0) {
             const mainImg = property.images.find(img => img.mainImage) || property.images[0];
             if (mainImg && mainImg.imageData) {
@@ -34,7 +34,6 @@ const DestinationCarousel = ({ dest, properties, navigate }) => {
             }
         }
 
-        // 2. Fallback în cazul în care backend-ul trimite direct mainImageBase64
         if (property.mainImageBase64) {
             return property.mainImageBase64.startsWith('data:')
                 ? property.mainImageBase64
@@ -127,7 +126,7 @@ function Home() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/properties/featured")
+        fetch(`${API_BASE_URL}/api/properties/featured`)
             .then(async response => {
                 if (!response.ok) throw new Error(`Eroare Featured: ${response.status}`);
                 return response.json();
@@ -140,7 +139,7 @@ function Home() {
     }, []);
 
     useEffect(() => {
-        fetch("http://localhost:8080/api/destinations/popular")
+        fetch(`${API_BASE_URL}/api/destinations/popular`)
             .then(async response => {
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -158,7 +157,7 @@ function Home() {
     useEffect(() => {
         if (popularDestinations.length > 0) {
             popularDestinations.forEach(dest => {
-                fetch(`http://localhost:8080/api/destinations/${encodeURIComponent(dest.name)}/top-properties?limit=10`)
+                fetch(`${API_BASE_URL}/api/destinations/${encodeURIComponent(dest.name)}/top-properties?limit=10`)
                     .then(res => {
                         if (!res.ok) throw new Error(`Status ${res.status}`);
                         return res.json();
@@ -188,7 +187,7 @@ function Home() {
     useEffect(() => {
         if (destination.trim().length >= 2 && !selectedLocationInfo) {
             const delayDebounceFn = setTimeout(() => {
-                fetch(`http://localhost:8080/api/locations/search?query=${destination}`)
+                fetch(`${API_BASE_URL}/api/locations/search?query=${destination}`)
                     .then(res => {
                         if (!res.ok) throw new Error(`Status: ${res.status}`);
                         return res.json();
@@ -212,34 +211,51 @@ function Home() {
         setIsLoggedIn(false);
     };
 
+
     const handleSearch = (e) => {
         e.preventDefault();
 
-        const queryParams = new URLSearchParams({
+        const searchCriteria = {
             city: destination,
             adults: guestCounts.adults,
             children: guestCounts.children,
-            rooms: guestCounts.rooms
+            rooms: guestCounts.rooms,
+            checkIn: startDate ? startDate.toISOString().split("T")[0] : null,
+            checkOut: endDate ? endDate.toISOString().split("T")[0] : null
+        };
+
+        const queryParams = new URLSearchParams();
+
+        Object.entries(searchCriteria).forEach(([key, value]) => {
+            if (value !== null && value !== "") {
+                queryParams.append(key, value);
+            }
         });
 
-        if (startDate) queryParams.append("checkIn", startDate.toISOString().split('T')[0]);
-        if (endDate) queryParams.append("checkOut", endDate.toISOString().split('T')[0]);
-
-        const searchUrl = `http://localhost:8080/api/properties/search?${queryParams.toString()}`;
+        const searchUrl =
+            `${API_BASE_URL}/api/properties/search?${queryParams.toString()}`;
 
         fetch(searchUrl)
             .then(res => {
-                if (!res.ok) throw new Error(`Eroare de la server. Status: ${res.status}`);
+                if (!res.ok) {
+                    throw new Error(`Eroare de la server. Status: ${res.status}`);
+                }
                 return res.json();
             })
             .then(data => {
-                navigate("/rezultate", { state: { properties: data } });
+                navigate("/rezultate", {
+                    state: {
+                        properties: data,
+                        searchCriteria: searchCriteria
+                    }
+                });
             })
             .catch(err => {
                 console.error("Eroare la căutare:", err);
                 alert("Căutarea a eșuat. Verifică consola!");
             });
     };
+
 
     const handleSelectLocation = (location) => {
         setDestination(location.name);

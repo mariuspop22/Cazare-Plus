@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// Ajustează căile de import pentru Header și Footer în funcție de structura folderelor tale
 import Header from './Header.jsx';
 import Footer from './Footer.jsx';
 import './AdminPendingProperties.css';
+import { API_BASE_URL } from './config';
 
 const AdminPendingProperties = () => {
     const [pendingProperties, setPendingProperties] = useState([]);
@@ -12,7 +12,7 @@ const AdminPendingProperties = () => {
 
     const fetchPendingProperties = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/admin/properties/pending');
+            const response = await fetch(`${API_BASE_URL}/api/admin/properties/pending`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
 
             const data = await response.json();

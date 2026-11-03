@@ -19,6 +19,7 @@ import {
 
 import React, {useEffect, useState} from "react";
 import stars from "./assets/stars.png";
+import { API_BASE_URL } from './config';
 
 const AdminPendingPropertyModificationsDetails=() => {
     const categoryIconStyle = {
@@ -52,6 +53,7 @@ const AdminPendingPropertyModificationsDetails=() => {
 
     const [OwnerAvarageRatingAndReview, setAverageRatingAndReview] = useState({ averageRating: 0, totalReviews: 0 });
     const [showRejectModal, setShowRejectModal] = useState(false);
+    const [rejectionReason, setRejectionReason] = useState('');
     const [actionLoading, setActionLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -62,7 +64,7 @@ const AdminPendingPropertyModificationsDetails=() => {
     };
     const fetchDraftPropertyModifications = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/properties/admin/get-property-modifications-details/${id}`);
+            const response = await fetch(`${API_BASE_URL}/api/properties/admin/get-property-modifications-details/${id}`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
             const data = await response.json();
             console.log("Draft gasit:");
@@ -81,7 +83,7 @@ const AdminPendingPropertyModificationsDetails=() => {
     useEffect(() => {
         const fetchPropertyDetails = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/properties/${id}`);
+                const response = await fetch(`${API_BASE_URL}/api/properties/${id}`);
                 if (!response.ok) throw new Error('Nu am putut încărca datele proprietății.');
 
                 const data = await response.json();
@@ -108,7 +110,7 @@ const AdminPendingPropertyModificationsDetails=() => {
 
     const fetchPropertyFacilities = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/facilities/property/${id}`);
+            const response = await fetch(`${API_BASE_URL}/api/facilities/property/${id}`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
 
             const data = await response.json();
@@ -128,7 +130,7 @@ const AdminPendingPropertyModificationsDetails=() => {
 
     const fetchOwnerApprovedProperties = async (ownerId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/owner/${ownerId}/properties`);
+            const response = await fetch(`${API_BASE_URL}/api/owner/${ownerId}/properties`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
             const data = await response.json();
             setOwnerApprovedProperties(data);
@@ -145,7 +147,7 @@ const AdminPendingPropertyModificationsDetails=() => {
 
     const fetchOwnerAvarageRatingAndReview = async (ownerId) => {
         try {
-            const response = await fetch(`http://localhost:8080/api/owner/${ownerId}/stats`);
+            const response = await fetch(`${API_BASE_URL}/api/owner/${ownerId}/stats`);
             if (!response.ok) throw new Error('Eroare la preluarea datelor');
             const data = await response.json();
             setAverageRatingAndReview(data);
@@ -325,12 +327,8 @@ const AdminPendingPropertyModificationsDetails=() => {
         try {
             const payload = buildApprovalPayload();
 
-            console.log("1. Apăsare pe Aprobare");
-            console.log("2. ID proprietate:", id);
-            console.log("3. Payload trimis:", payload);
-
             const response = await fetch(
-                `http://localhost:8080/api/properties/admin/approve-property-modifications/${id}`,
+                `${API_BASE_URL}/api/properties/admin/approve-property-modifications/${id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -362,7 +360,49 @@ const AdminPendingPropertyModificationsDetails=() => {
         }
     };
 
+  const handleReject= async() =>{
+      if (!window.confirm("Ești sigur că vrei să respingi aceste modificări?")) {
+          return;
+      }
 
+      setActionLoading(true);
+      const payload={
+          reason:rejectionReason
+      }
+      try {
+
+          const response = await fetch(
+              `${API_BASE_URL}/api/properties/admin/reject-property-modifications/${id}`,
+              {
+                  method: "PUT",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body:JSON.stringify(payload)
+              }
+          );
+
+          const responseText = await response.text();
+
+          console.log("4. Status HTTP:", response.status);
+          console.log("5. Răspuns backend:", responseText);
+
+          if (!response.ok) {
+              throw new Error(
+                  `Eroare HTTP ${response.status}: ${responseText}`
+              );
+          }
+
+          alert("Modificările au fost respinse cu succes!");
+          navigate("/admin/pending-edited-properties");
+
+      } catch (err) {
+          console.error("Eroare la repingerea modificărilor:", err);
+          alert(err.message);
+      } finally {
+          setActionLoading(false);
+      }
+    }
         return(
     <div className="Property-modifications-details-page">
       <Header/>

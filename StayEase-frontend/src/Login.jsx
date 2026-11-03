@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./RegisterModal.css";
+import { API_BASE_URL } from './config';
 
 function LoginModal({ isOpen, onClose, onLoginSuccess }) {
     const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ function LoginModal({ isOpen, onClose, onLoginSuccess }) {
         setErrorMessage("");
 
         try {
-            const response = await fetch("http://localhost:8080/api/auth/login", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -33,8 +34,9 @@ function LoginModal({ isOpen, onClose, onLoginSuccess }) {
             }
 
             const data = await response.json();
+            console.log(data);
             localStorage.setItem("jwtToken", data.token);
-
+            localStorage.setItem("userId", data.userId);
             setFormData({ email: "", password: "" });
 
             if (onLoginSuccess) {

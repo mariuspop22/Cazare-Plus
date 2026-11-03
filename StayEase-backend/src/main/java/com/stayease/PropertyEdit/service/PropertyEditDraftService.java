@@ -2,13 +2,18 @@ package com.stayease.PropertyEdit.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stayease.PropertyEdit.Repository.PropertyEditDraftRepository;
+import com.stayease.PropertyEdit.dtos.EditedPropertyDetailsDto;
 import com.stayease.PropertyEdit.dtos.PropertyDraftDataDto;
 import com.stayease.PropertyEdit.entity.PropertyEditDraft;
 import com.stayease.PropertyEdit.enums.DraftStatus;
 import com.stayease.property.dto.AdminPendingPropertyResponseDto;
+import com.stayease.property.dto.PropertyResponseDto;
 import com.stayease.property.entity.Property;
 import com.stayease.property.repository.PropertyRepository;
+import com.stayease.property.service.PropertyService;
 import com.stayease.users.Owner.Dto.OwnerProfileResponseDto;
+import com.stayease.users.Owner.entity.Owner;
+import com.stayease.users.Owner.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,21 +28,23 @@ public class PropertyEditDraftService {
     private final ObjectMapper objectMapper;
     private final PropertyEditDraftRepository propertyEditDraftRepository;
     private final PropertyRepository propertyRepository;
-
+    private final PropertyService propertyService;
+    private final OwnerRepository ownerRepository;
     @Transactional
     public PropertyEditDraft saveOrUpdateDraft(Long propertyId, Long userId, PropertyDraftDataDto draftData) {
         try {
             String jsonPayload = objectMapper.writeValueAsString(draftData);
 
             Optional<PropertyEditDraft> existingDraft = draftRepository
-                    .findByPropertyIdAndStatus(propertyId, DraftStatus.PENDING);
+                    .findByPropertyId(propertyId);
 
             PropertyEditDraft draft;
 
-            if (existingDraft.isPresent()) {
+            if (existingDraft.isPresent() ) {
                 draft = existingDraft.get();
                 draft.setDraftData(jsonPayload);
                 draft.setUserId(userId);
+                draft.setStatus(DraftStatus.PENDING);
             } else {
                 draft = PropertyEditDraft.builder()
                         .propertyId(propertyId)
@@ -116,5 +123,32 @@ public class PropertyEditDraftService {
                         throw new RuntimeException("Eroare la parsarea JSON-ului din draft: " + e.getMessage(), e);
                     }
                 });
+    }
+    public List<EditedPropertyDetailsDto> getOwnerPendingEdidedProperties(Long user_id) {
+        List<EditedPropertyDetailsDto> pendingOwnerEdidedProperties = new ArrayList<EditedPropertyDetailsDto>();
+
+        List<PropertyEditDraft> drafts = propertyEditDraftRepository.findPropertiesDraftByUserId(user_id);
+        for (PropertyEditDraft draft : drafts) {
+            Property property = propertyRepository.findById(draft.getPropertyId())
+                    .orElseThrow(() -> new RuntimeException("Proprietatea cu ID-ul " + draft.getPropertyId() + " nu a fost găsită"));
+            EditedPropertyDetailsDto propertydto = new EditedPropertyDetailsDto();
+            propertydto.setId(property.getId());
+            propertydto.setTitle(property.getTitle());
+
+
+            if (property.getImages() != null && !property.getImages().isEmpty()) {
+                byte[] imageBytes = property.getImages().get(0).getImageData();
+                if (imageBytes != null) {
+                    propertydto.setMainImageBase64(Base64.getEncoder().encodeToString(imageBytes));
+                }
+            }
+            propertydto.setDraftStatus(draft.getStatus());
+            if (draft.getRejectionReason()!= null){
+                propertydto.setRejection_reason(draft.getRejectionReason());
+            }
+            pendingOwnerEdidedProperties.add(propertydto);
+
+        }
+        return  pendingOwnerEdidedProperties;
     }
 }

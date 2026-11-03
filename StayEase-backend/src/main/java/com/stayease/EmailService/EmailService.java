@@ -48,4 +48,17 @@ public class EmailService {
 
         mailSender.send(message);
     }
+    public void sendPropertyModificationsRejectEmail(String toEmail,String propertyTitle,String reason){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("Modificarile  tale au respinse! - " + propertyTitle);
+        message.setText("Salut,\n\n" +
+                "Din pacate modificarile pentru proprietatea \"" + propertyTitle + "\" au fost respinse de către administrator.\n\n" +
+                "Motivul respingerii:\n" + reason + "\n\n" +
+                "Va rugam sa intrati in aplicatie si sa ajustati modificarile conform cerintelor impuse de catre administrator.\n\n"+
+                "O zi frumoasă,\nEchipa CazarePlus!");
+        message.setFrom("mariusvalentin.popescu@ulbsibiu.ro");
+
+        mailSender.send(message);
+    }
 }

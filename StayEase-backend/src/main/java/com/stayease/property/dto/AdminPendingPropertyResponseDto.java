@@ -18,4 +18,5 @@ public class AdminPendingPropertyResponseDto {
     private String status;
     private String mainImageBase64;
     private OwnerProfileResponseDto owner;
+    private String rejection_reason;
 }

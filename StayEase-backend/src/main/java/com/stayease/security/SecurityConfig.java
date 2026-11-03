@@ -29,32 +29,30 @@ public class SecurityConfig {
                 // RECOMANDAT: Pentru JWT, sesiunile trebuie sa fie stateless
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // 1. Permite pre-flight requests din browser (React)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 2. Autentificare si inregistrare
                         .requestMatchers("/api/auth/**", "/api/register/**").permitAll()
-
-                        // 3. Locatii si Destinatii (Asta iti repara cautarea locatiei)
                         .requestMatchers("/api/locations/**").permitAll()
                         .requestMatchers("/api/destinations/**").permitAll()
-                        .requestMatchers("/api/owner/**").permitAll()
 
-                        // 4. Cautare Property -> TRUIE PUSĂ ÎNAINTEA LUI /** 
+                        // Endpoint-uri publice specifice
                         .requestMatchers("/api/properties/search").permitAll()
-
-                        // 5. Restul de rute publice pentru Property si Facilities (doar GET)
-                        .requestMatchers(HttpMethod.GET, "/api/properties/**", "/api/facilities/**").permitAll()
+                        .requestMatchers("/api/properties/search/filters").permitAll()
                         .requestMatchers("/api/properties/*/UnavailablePeriods").permitAll()
-                        // 6. Rute protejate
-                        .requestMatchers(HttpMethod.POST, "/api/properties/**").authenticated()
+
+                        // Endpoint-uri care necesită autentificare
+                        .requestMatchers("/api/properties/owner/**").authenticated()
                         .requestMatchers("/api/owner/**").authenticated()
                         .requestMatchers("/api/booking/**").authenticated()
-                        .requestMatchers("api/admin/**").permitAll()
-                        .requestMatchers("api/properties/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/properties/**").authenticated()
 
+                        // Admin
+                        .requestMatchers("/api/admin/**").permitAll()
+                        .requestMatchers("/api/properties/admin/**").permitAll()
 
-                        // 7. Orice altceva
+                        // GET public
+                        .requestMatchers(HttpMethod.GET, "/api/properties/**", "/api/facilities/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

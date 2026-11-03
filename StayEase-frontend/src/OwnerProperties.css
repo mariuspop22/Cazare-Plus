@@ -8,15 +8,15 @@
     align-items: center;
     margin-bottom: 10px;
 }
-.owner-properties-page .owner-properties-container{
+
+.owner-properties-container{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
 }
-.owner-properties-section{
+.owner-active-properties, .owner-pending-properties, .owner-edided-properties, .owner-rejected-properties{
     width:1300px;
-    margin-top: 0;
+    margin-top: 50px;
 
 }
 .owner-properties-section h3{
@@ -44,7 +44,7 @@
 .property-card-modern {
     position: relative;
     height: 220px;
-    border-radius: 25px;
+    border-radius: 30px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -146,21 +146,16 @@
     top: 15px;
     right: 15px;
     background-color: #d32f2f;
-    color: #ffffff;
+    color: #000000;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 400;
     z-index: 10;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-
-
-
-
-
 .rejection-modal-overlay {
     position: fixed;
     top: 0;
@@ -233,5 +228,10 @@
     transition: background-color 0.2s;
     text-decoration: underline;
 
+}
+.section-header h3{
+    margin-top:0;
+    margin-bottom: 10px;
+    font-weight: 400;
 }
 

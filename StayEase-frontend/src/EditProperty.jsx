@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './AddProperty.css';
 import Header from './Header.jsx';
+import { API_BASE_URL } from './config';
 
 const removeDiacritics = (str) => {
     if (!str) return "";
@@ -55,11 +56,10 @@ const EditProperty = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                // Încărcăm simultan datele proprietății, facilitățile și județele
                 const [propRes, facRes, countiesRes] = await Promise.all([
-                    fetch(`http://localhost:8080/api/properties/${id}`),
-                    fetch('http://localhost:8080/api/facilities/grouped'),
-                    fetch('http://localhost:8080/api/locations/counties')
+                    fetch(`${API_BASE_URL}/api/properties/${id}`),
+                    fetch(`${API_BASE_URL}/api/facilities/grouped`),
+                    fetch(`${API_BASE_URL}/api/locations/counties`)
                 ]);
 
                 if (!propRes.ok) {
@@ -155,7 +155,7 @@ const EditProperty = () => {
     // Fetch orașe atunci când un județ este selectat / schimbat
     useEffect(() => {
         if (selectedCountyId) {
-            fetch(`http://localhost:8080/api/locations/counties/${selectedCountyId}/cities`)
+            fetch(`${API_BASE_URL}/api/locations/counties/${selectedCountyId}/cities`)
                 .then(response => response.json())
                 .then(data => {
                     setCities(data);
@@ -404,7 +404,7 @@ const EditProperty = () => {
         const token = localStorage.getItem('jwtToken');
 
         try {
-            const response = await fetch(`http://localhost:8080/api/properties/${id}/draft?userId=${userId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/properties/${id}/draft?userId=${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
