@@ -13,6 +13,7 @@ import OwnerProperties from "./OwnerProperties.jsx";
 import EditRejectedProperty from "./EditRejectedProperty.jsx"
 import AdminPendingEditedProperties from "./AdminPendingEditedProperties.jsx";
 import AdminPendingPropertyModificationsDetails from "./AdminPendingPropertyModificationsDetails.jsx";
+import SelectPropertyForManagingAvailability from "./SelectPropertyForManagingAvailability.jsx";
 function App() {
     return (
         <Router>
@@ -24,13 +25,14 @@ function App() {
                 <Route path="/rezultate" element={<SearchResults />} />
                 <Route path="/edit-property/:id" element={<EditProperty />} />
 
-                <Route path="/manage-availability/:id" element={<ManageAvailability />} />
+                <Route path="owner/manage-availability/:id" element={<ManageAvailability />} />
                 <Route path="/admin/cereri-pending" element={<AdminPendingProperties />} />
                 <Route path="/admin/property/:id" element={<AdminPendingPropertyDetails/>}/>
                 <Route path="/owner/properties" element={<OwnerProperties/>}/>
                 <Route path="/owner/edit-rejected-property/:id" element={<EditRejectedProperty/>}/>
                 <Route path="/admin/pending-edited-properties" element={<AdminPendingEditedProperties/>}/>
                 <Route path="/admin/get-property-modifications-details/:id" element={<AdminPendingPropertyModificationsDetails/>}/>
+                <Route path="/owner/select-property-for-managing-availability" element={<SelectPropertyForManagingAvailability/>}/>
             </Routes>
         </Router>
     );

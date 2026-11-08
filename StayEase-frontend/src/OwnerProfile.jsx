@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './OwnerProfile.css';
 import Header from "./Header.jsx";
+import Footer from "./Footer";
+
 import { API_BASE_URL } from './config';
 
 const OwnerProfile = () => {
@@ -174,6 +176,7 @@ const OwnerProfile = () => {
                 </div>
 
             </div>
+            <Footer />
 
         </>
     );

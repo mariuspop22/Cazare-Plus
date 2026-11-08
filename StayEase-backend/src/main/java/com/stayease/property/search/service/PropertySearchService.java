@@ -25,7 +25,7 @@ public class PropertySearchService {
         String cleanCity = "";
 
         if (request.getCity() != null && !request.getCity().trim().isEmpty()) {
-            cleanCity = removeDiacritics(request.getCity().trim());
+            cleanCity = request.getCity().trim();
         }
 
         // Apelăm query-ul din Repository

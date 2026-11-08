@@ -33,7 +33,7 @@
     color: #4a4a4a;
     font-weight: 300;
     font-size: 14px;
-    margin-left: 24px;
+    margin-left: 12px;
     transition: color 0.3s ease;
 }
 
@@ -46,5 +46,42 @@
     padding: 6px 12px;
     border-radius: 6px;
 }
+.nav-link.login {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu-bottom{
+    font-size: 20px;
+    background-color: transparent;
+    border:none;
+    padding:10px;
+    cursor: pointer;
+}
 
+.menu-content {
+    max-width: 500px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding:30px 25px;
+    position: absolute;
+    z-index: 1000;
+    top: 120px;
+    right: 50px;
+    border:2px solid #f5f5f5;
+    background-color: white;
+}
+.menu-content .nav-link{
+    text-decoration: none;
+    color:black;
+    font-size: 14px;
+    display: flex;
+    font-weight: 300;
+}
 
+.nav-link-icon{
+    display: flex;
+    gap: 10px;
+ }

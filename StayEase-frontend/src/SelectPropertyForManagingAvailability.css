@@ -1,0 +1,13 @@
+.properties-content{
+    width: 1300px;
+}
+.properties-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.properties-content h3{
+    margin-top:50px;
+    margin-bottom: 30px;
+    font-weight: 300;
+}

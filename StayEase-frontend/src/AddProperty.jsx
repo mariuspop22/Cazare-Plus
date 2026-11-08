@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './AddProperty.css';
+import Footer from "./Footer";
+
 import { API_BASE_URL } from './config';
 import Header from "./Header.jsx";
 
@@ -474,6 +476,8 @@ const AddProperty = () => {
                     </div>
                 </form>
             </div>
+            <Footer />
+
         </div>
     );
 };

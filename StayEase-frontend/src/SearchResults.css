@@ -3,14 +3,14 @@
 }
 
 .search-results-container {
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 2rem;
 }
 
 .properties-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 300px));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 200px));
     justify-content: center;
     gap: 3rem 2rem;
     margin-top: 2rem;
@@ -37,9 +37,9 @@
 
 .property-image {
     width: 100%;
-    height: 210px;
+    height: 160px;
     object-fit: cover;
-    border-radius: 30px !important;
+    border-radius: 35px !important;
     display: block;
 }
 
@@ -59,7 +59,6 @@
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
-/* === Stiluri noi pentru Butonul de Favorite === */
 .property-card .favorite-btn {
     position: absolute ;
     top: 12px;
@@ -98,27 +97,29 @@
 .property-info h3 {
     margin-top: 12px;
     margin-bottom: 5px;
-    font-size: 15px;
+    font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 500;
-}
-
-.property-location {
-    color: #717171;
-    font-size: 15px;
-    margin-bottom: 16px;
     font-weight: 400;
 }
 
-.property-details-mini {
+.property-info .property-location {
+    color: #717171;
+    font-size: 12px;
+    margin-bottom: 5px;
+    margin-left:2px;
+}
+
+.property-info .property-details-mini {
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     color: #717171;
     margin-bottom: 5px;
-    font-weight: 400;
+    margin-left:2px;
+
+
 }
 
 .property-details-capacity {
@@ -134,15 +135,11 @@
     margin-top: 10px;
 }
 
-.price {
-    font-size: 12px;
-    color: #575252;
+.price, .price strong{
+    font-size: 13px;
+    color: black;
 }
 
-p.property-location {
-    font-size: 12px;
-    margin-bottom: 5px;
-}
 .favorite-btn.active svg {
     fill: #ffffff;
     stroke: #ffffff;
