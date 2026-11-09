@@ -1,4 +1,4 @@
-package com.stayease.users.Renter;
+package com.stayease.users.Renter.entity;
 
 import com.stayease.users.Acount.User;
 import jakarta.persistence.*;

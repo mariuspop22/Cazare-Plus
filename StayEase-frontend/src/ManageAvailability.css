@@ -46,9 +46,7 @@
     color: #999;
 }
 
-/* ============================================================== */
-/* BUTOANE (Proporții 20% / 80% pe toată lățimea)                 */
-/* ============================================================== */
+
 .manage-availability-page .calendar-footer-actions {
     display: flex;
     flex-direction: row;

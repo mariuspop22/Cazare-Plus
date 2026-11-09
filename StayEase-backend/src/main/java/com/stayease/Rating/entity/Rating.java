@@ -2,7 +2,7 @@ package com.stayease.rating.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stayease.property.entity.Property;
-import com.stayease.users.Renter.Renter;
+import com.stayease.users.Renter.entity.Renter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

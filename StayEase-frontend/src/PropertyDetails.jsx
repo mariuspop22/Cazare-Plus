@@ -123,7 +123,8 @@ const PropertyDetails = () => {
     const [reviewCount, setReviewCount] = useState(0);
     const [ratingCount, setRatingCount] = useState(0);
     const [reviews, setPropertyReviews] = useState([]);
-
+    const [totalPriceForReservation, setTotalPriceForReservation]=useState(null);
+    const [priceLabel, setPriceLabel] = useState("/ noapte");
     const defaultAvatar = "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
     const categoryIconStyle = { color: '#222222', fontSize: '24px', strokeWidth: '1.5' };
 
@@ -146,6 +147,7 @@ const PropertyDetails = () => {
 
                 const data = await response.json();
                 setProperty(data);
+                setTotalPriceForReservation(data.pricePerNight);
                 if (data.owner) setOwner(data.owner);
                 if (data.images && data.images.length > 0) {
                     const mainImg = data.images.find(img => img.mainImage) || data.images[0];
@@ -163,7 +165,6 @@ const PropertyDetails = () => {
         checkFavoriteStatus();
     }, [id]);
 
-    // Preluare Recenzii
     useEffect(() => {
         const fetchPropertyReviews = async () => {
             try {
@@ -194,7 +195,6 @@ const PropertyDetails = () => {
         if (id) fetchReviewCount();
     }, [id]);
 
-    // Preluare Rating Mediu
     useEffect(() => {
         const fetchRatingCount = async () => {
             try {
@@ -210,7 +210,6 @@ const PropertyDetails = () => {
         if (id) fetchRatingCount();
     }, [id]);
 
-    // Preluare Proprietăți Similare
     useEffect(() => {
         const fetchSimilarProperties = async () => {
             try {
@@ -280,6 +279,43 @@ const PropertyDetails = () => {
     if (loading) return <div className="loader-container"><h2>Se încarcă detaliile...</h2></div>;
     if (error) return <div className="error-container"><h2>Eroare: {error}</h2></div>;
     if (!property) return <div className="error-container"><h2>Proprietatea nu a fost găsită.</h2></div>;
+    const CalculateTotalPrice = (value) => {
+        if (value && value[0] && value[1]) {
+            const checkIn = value[0];
+            const checkOut = value[1];
+            const time = checkOut.getTime() - checkIn.getTime();
+            const numberOfNight = Math.round(time / (1000 * 60 * 60 * 24));
+            const totalprice=property.pricePerNight*numberOfNight;
+            setTotalPriceForReservation(totalprice);
+            setPriceLabel("");
+
+        }
+    };
+    const formatToLocalDate = (date) => {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    };
+    const submitReservationDetails = () => {
+        const ReservationDetails = {};
+
+        if (selectedDates[0] && selectedDates[1]) {
+            ReservationDetails.checkIn = formatToLocalDate(selectedDates[0]);
+            ReservationDetails.checkOut = formatToLocalDate(selectedDates[1]);
+        }
+
+        if (totalPriceForReservation) {
+            ReservationDetails.totalPriceForReservation = totalPriceForReservation;
+        }
+
+        ReservationDetails.propertyId = property.id;
+        ReservationDetails.pricePerNight=property.pricePerNight;
+        navigate('/make-reservation', { state: { ReservationDetails } });
+    };
+
 
     return (
         <div className="property-details-page">
@@ -451,7 +487,10 @@ const PropertyDetails = () => {
 
                             <div className="custom-calendar-wrapper">
                                 <Calendar
-                                    onChange={setSelectedDates}
+                                    onChange={(value) => {
+                                        setSelectedDates(value);
+                                        CalculateTotalPrice(value);
+                                    }}
                                     value={selectedDates}
                                     selectRange={true}
                                     tileDisabled={isDateDisabled}
@@ -466,7 +505,11 @@ const PropertyDetails = () => {
                             <div className="calendar-footer-actions">
                                 <button
                                     className="clear-dates-btn"
-                                    onClick={() => setSelectedDates([null, null])}
+                                    onClick={() => {
+                                        setSelectedDates([null, null]);
+                                        setTotalPriceForReservation(property.pricePerNight);
+                                        setPriceLabel("/noapte");
+                                    }}
                                 >
                                     Șterge datele
                                 </button>
@@ -478,10 +521,31 @@ const PropertyDetails = () => {
                     <div className="property-sidebar-right">
                         <div className="price-card">
                             <div className="price-header">
-                                <span className="price-amount">{property.pricePerNight} RON</span>
-                                <span className="price-per">/ noapte</span>
+                                <span className="price-amount">{totalPriceForReservation} RON</span>
+                                <span className="price-per">{priceLabel}</span>
                             </div>
-                            <button className="book-button">Rezervă Acum</button>
+                            {selectedDates[0] && selectedDates[1] && (
+                                <div className="selectedDates">
+                                    <div className="checkInDate-content">
+                                        <div className="checkInDate-label">
+                                        Check-in
+                                        </div>
+                                        <div className="checkInDate">
+                                            {selectedDates[0].toLocaleDateString('ro-RO')}
+                                        </div>
+                                    </div>
+                                    <div className="checkOutDate-content">
+                                        <div className="checkOutDate-label">
+                                            Check-out
+                                        </div>
+                                        <div className="checkOutDate">
+                                         {selectedDates[1].toLocaleDateString('ro-RO')}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            <button className="book-button"
+                            onClick={submitReservationDetails}>Rezervă Acum</button>
                             <div className="price-details-note">
                                 Prețul final poate varia în funcție de numărul de zile.
                             </div>
@@ -551,7 +615,6 @@ const PropertyDetails = () => {
                     )}
                 </div>
 
-                {/* SECȚIUNEA PROPRIETĂȚI SIMILARE */}
                 <div className="similar-properties-section" >
                     <div className="similar-properties-header" >
                         <TbBuildingCommunity style={{ color: '#222222', fontSize: '28px' }} />

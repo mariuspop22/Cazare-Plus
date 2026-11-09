@@ -6,7 +6,7 @@ import com.stayease.property.repository.PropertyRepository;
 import com.stayease.rating.entity.Rating;
 import com.stayease.Rating.Repository.RatingRepository;
 import com.stayease.Rating.Service.RatingService;
-import com.stayease.users.Renter.Renter;
+import com.stayease.users.Renter.entity.Renter;
 import com.stayease.users.Renter.Repository.RenterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

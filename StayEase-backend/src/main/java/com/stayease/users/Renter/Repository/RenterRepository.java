@@ -1,17 +1,17 @@
 package com.stayease.users.Renter.Repository;
 
 
-import com.stayease.users.Renter.Renter;
+import com.stayease.users.Owner.entity.Owner;
+import com.stayease.users.Renter.entity.Renter;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface RenterRepository extends JpaRepository<Renter, Long> {
 
-    // JpaRepository îți oferă automat metode precum:
-    // save(), findById(), findAll(), deleteById(), etc.
-
-    // Dacă ai nevoie pe viitor de căutări personalizate, le poți defini aici.
-    // Exemplu:
-    // Optional<Renter> findByTelephoneNumber(String telephoneNumber);
+    Optional<Renter> findByUserId(Long userId);
 }

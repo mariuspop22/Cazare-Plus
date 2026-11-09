@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/api/register/**").permitAll()
                         .requestMatchers("/api/locations/**").permitAll()
                         .requestMatchers("/api/destinations/**").permitAll()
+                        .requestMatchers("/api/renter/**").permitAll()
 
                         // Endpoint-uri publice specifice
                         .requestMatchers("/api/properties/search").permitAll()

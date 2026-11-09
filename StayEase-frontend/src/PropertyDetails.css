@@ -1050,3 +1050,18 @@
 .similar-properties-header{
     margin-bottom:30px;
 }
+
+.selectedDates{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+.checkInDate-label, .checkOutDate-label{
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 400;
+}
+.checkInDate,.checkOutDate{
+    font-size:13px;
+    color:#6b7280;
+}

@@ -14,6 +14,7 @@ import EditRejectedProperty from "./EditRejectedProperty.jsx"
 import AdminPendingEditedProperties from "./AdminPendingEditedProperties.jsx";
 import AdminPendingPropertyModificationsDetails from "./AdminPendingPropertyModificationsDetails.jsx";
 import SelectPropertyForManagingAvailability from "./SelectPropertyForManagingAvailability.jsx";
+import MakeReservation from "./MakeReservation.jsx";
 function App() {
     return (
         <Router>
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/admin/pending-edited-properties" element={<AdminPendingEditedProperties/>}/>
                 <Route path="/admin/get-property-modifications-details/:id" element={<AdminPendingPropertyModificationsDetails/>}/>
                 <Route path="/owner/select-property-for-managing-availability" element={<SelectPropertyForManagingAvailability/>}/>
+                <Route path="/make-reservation" element={<MakeReservation/>}/>
             </Routes>
         </Router>
     );

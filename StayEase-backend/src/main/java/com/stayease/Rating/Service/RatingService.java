@@ -5,7 +5,7 @@ import com.stayease.Rating.dto.RatingResponseDto;
 import com.stayease.property.entity.Property;
 import com.stayease.property.repository.PropertyRepository;
 import com.stayease.rating.entity.Rating;
-import com.stayease.users.Renter.Renter;
+import com.stayease.users.Renter.entity.Renter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

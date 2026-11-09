@@ -99,7 +99,6 @@ input[type="checkbox"] {
 .facilities-grid {
     display: flex;
     flex-direction: column;
-    gap: 20px;
 }
 textarea{
     padding: 40px;
